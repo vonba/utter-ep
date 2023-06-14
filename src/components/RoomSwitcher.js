@@ -39,6 +39,8 @@ export default function RoomSwitcher({roomName, setRoomName}) {
   }
 
   return <RoomSwitcherStyles>
-    {rooms.map(room => <button type="button" onClick={() => handleRoomSwitch(room.roomName)}>{room.label}</button>)}
+    {rooms.map(room => 
+      <button type="button" key={room.roomName} onClick={() => handleRoomSwitch(room.roomName)}>{room.label}</button>
+    )}
   </RoomSwitcherStyles>
 }

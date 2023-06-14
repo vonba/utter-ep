@@ -14,7 +14,8 @@ const VideoBackgroundStyles = styled.div`
   }
 `;
 
-export default function VideoBackground({videoName}) {
+export default function VideoBackground({videoName, handleVideoEnd}) {
+  // TODO: call handleVideoEnd when video finishes
   return <VideoBackgroundStyles>
     <video autoPlay={true} src={`${process.env.PUBLIC_URL}/video/${videoName}`} />
   </VideoBackgroundStyles>

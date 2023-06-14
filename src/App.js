@@ -1,18 +1,16 @@
-import styled from "styled-components";
 import Room from "./components/Room";
 import { useState } from "react";
 import RoomSwitcher from "./components/RoomSwitcher";
-
-const AppStyles = styled.div``;
+import './App.css';
 
 function App() {
   const [roomName, setRoomName] = useState('desire');
 
   return (
-    <AppStyles className="App">
+    <div className="App">
         <RoomSwitcher roomName={roomName} setRoomName={setRoomName} />
         <Room roomName={roomName} />
-    </AppStyles>
+    </div>
   );
 }
 

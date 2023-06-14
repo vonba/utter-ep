@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import VideoBackground from "./VideoBackground";
 import RoomDesire from "./RoomDesire";
+import RoomItShines from "./RoomItShines";
 
 const RoomStyles = styled.div`
   position: fixed;
@@ -34,11 +35,20 @@ const videoNames ={
 export default function Room({roomName}) {
   const videoName = videoNames[roomName];
 
+  const nextRoom = () => {
+    // TODO: move to the next room
+  }
+
   return <RoomStyles>
-    <VideoBackground videoName={videoName} />
+    <VideoBackground videoName={videoName} handleVideoEnd={nextRoom} />
     {roomName === 'desire' && (
       <div className="roomWrapper">
         <RoomDesire className="room" />
+      </div>
+    )}
+    {roomName === 'it-shines' && (
+      <div className="roomWrapper">
+        <RoomItShines className="room" />
       </div>
     )}
   </RoomStyles>
