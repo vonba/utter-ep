@@ -38,6 +38,7 @@ export default function RoomSwitcher({roomName, setRoomName}) {
     setRoomName(newRoomName);
   }
 
+  // TODO: set className for current room's button
   return <RoomSwitcherStyles>
     {rooms.map(room => 
       <button type="button" key={room.roomName} onClick={() => handleRoomSwitch(room.roomName)}>{room.label}</button>

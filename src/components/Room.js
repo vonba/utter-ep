@@ -17,7 +17,7 @@ const RoomStyles = styled.div`
   }
 
   .roomWrapper {
-    position: absolute;
+    position: relative;
     top: 7em;
     left: 1em;
     z-index: 2;
