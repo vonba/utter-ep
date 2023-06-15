@@ -11,12 +11,34 @@ const RoomItShinesStyles = styled.div`
       opacity: 1;
     }
   }
+  @keyframes grow {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.12);
+    }
+  }
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
+
   .words {
     color: white;
     padding: 1rem;
     position: absolute;
     text-transform: uppercase;
-    animation: fade-in 2s ease-in;
+    animation: grow 5s, fade-in 2s ease-in;
+    
+    &.spin {
+      transform: none;
+      animation: spin 5s, fade-in 2s ease-in;
+    }
   }
 
   .flip {
@@ -34,8 +56,30 @@ const RoomItShinesStyles = styled.div`
     cursor: pointer;
 
     &:hover {
-      opacity: 0.6;
+      transform: scaleX(-1);
     }
+  }
+
+  button.spin {
+    cursor: pointer;
+    left: 1em;
+    bottom: 10em;
+    
+    &:hover {
+      transform: rotate(10deg);
+    }
+  }
+  
+  .spin {
+    border: none;
+    width: 5em;
+    height: 5em;
+    text-indent: -999em;
+    background-image: url("/windmill.svg");
+    background-color: transparent;
+    background-size: contain;
+    position: absolute;
+    transition: all 0.5s;
   }
 `;
 
@@ -63,7 +107,7 @@ const getRandomStyles = () => {
     fontSize: `${getRandomInteger(5, 60) / 10}rem`,
     top: `${getRandomInteger(-5, 80)}%`,
     left: `${getRandomInteger(-5, 80)}%`,
-    transform: transform,
+    transform,
   };
 }
 
@@ -73,12 +117,18 @@ const getWordElement = (id) => {
 
 export default function RoomItShines() {
   const [wordElements, setWordElements] = useState([]);
+  const [spin, setSpin] = useState('');
 
   const changePositions = () => {
     setWordElements(wordElements.map(e => {
       e.styles = getRandomStyles();
-      return e
+      return e;
     }))
+  }
+
+  const changePositionsSpin = () => {
+    if (spin === '') return setSpin('spin');
+    if (spin === 'spin') setSpin('');
   }
 
   // Run once
@@ -110,8 +160,9 @@ export default function RoomItShines() {
 
   return (
     <RoomItShinesStyles>
-      {wordElements.map(e => <span class="words" style={e.styles}>{e.contents}</span>)}
+      {wordElements.map(e => <span class={`words ${spin}`} style={e.styles}>{e.contents}</span>)}
       <button type="button" className="flip" onClick={changePositions}>Flip!</button>
+      <button type="button" className="spin" onClick={changePositionsSpin}>Spin!</button>
     </RoomItShinesStyles>
   );
 }

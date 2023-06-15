@@ -31,7 +31,7 @@ const RoomDesireStyles = styled.div`
     text-align: center;
     color: white;
     font-size: 2rem;
-    width: 66%;
+    width: 40%;
     margin: 0 auto;
 
     &.fadeIn {
@@ -49,6 +49,7 @@ const RoomDesireStyles = styled.div`
     color: black;
     font-size: 1.5rem;
     margin: 0.5rem;
+    padding: 0.5rem 1rem;
     display: inline-block;
     cursor: pointer;
 
@@ -86,7 +87,7 @@ const qa = [
   },
   {
     question: "Through the window, your mother is calling you to come down to the tennis court. On your bed, the tennis instructor is bleeding to death.",
-    answers: ["Yell back that you are done with tennis", "Wrap yourself in the bloody sheets", "Sleep"],
+    answers: ["Yell back that you are done with tennis", "Wrap yourself in the bloody sheets", "Curl up and sleep the sleep of the righteous"],
   },
   {
     question: "You are out of both matches and lighter fluid and her cigarette is still not lit.",
@@ -102,10 +103,10 @@ const qa = [
   },
   {
     question: "Please let me out of here! I am stuck inside this thing and you have to let me out. I don't want to be in here, it's awful and I am in pain. Let me out!!",
-    answers: ["Not until you have paid your debts", "What's in it for me?", "Mute sound"],
+    answers: ["Not until you have paid your debts!", "What's in it for me?", "Ignore"],
   },
   {
-    question: "From under the locked bathroom door, a growing pool of blood and shit is intruding into your room. You have the hand of a lifetime in your online poker game.",
+    question: "From under the locked bathroom door, a growing pool of blood and shit is intruding into your room. You also have the hand of a lifetime in your online poker game.",
     answers: ["Call", "Raise"],
   },
   {
@@ -116,14 +117,24 @@ const qa = [
     question: "You have won the game",
     answers: ["Keep playing anyway"],
   },
+  {
+    question: "When daddy died he put you in charge, but Lisa is the one who will inherit all the money.",
+    answers: ["Accept your father's decision", "Slay Lisa", "Run away"],
+  },
+  {
+    question: "On the last day of your life, how will you celebrate your existence?",
+    answers: ["Champagne and strawberries", "Syphilis", "Heroin"],
+  },
+  {
+    question: "It's them. They have found you. There is no time to lose.",
+    answers: ["Tap dance as a diversion", "Juggle as a diversion", "Trapeze as a diversion"],
+  },
 ]
 
 export default function RoomDesire() {
   const [qIndex, setQIndex] = useState(0);
   const [usedIndexes, setUsedIndexes] = useState([0]);
   const [fade, setFade] = useState('fadeIn');
-
-  console.log({qIndex, usedIndexes, fade})
 
   const handleClick = () => {
     // Fade out
@@ -133,6 +144,7 @@ export default function RoomDesire() {
       // Reset if we've used all questions
       if (usedIndexes.length === qa.length) {
         setUsedIndexes([0]);
+        setFade('fadeIn');
         return setQIndex(0);
       }
       
