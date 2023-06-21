@@ -22,7 +22,7 @@ const RoomSoundAndTouchStyles = styled.div`
   }
 
   .panel {
-    background-color: rgba(242, 242, 242, 0.8);
+    // background-color: rgba(242, 242, 242, 0.8);
     padding: 1rem;
     border-radius: 4px;
     display: flex;
