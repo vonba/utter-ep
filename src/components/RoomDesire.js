@@ -164,7 +164,7 @@ export default function RoomDesire() {
     <div className="questionWrapper">
       <div className={`question ${fade}`}>
         <p>{(qa[qIndex]).question}</p>
-        {(qa[qIndex]).answers.map(a => <><button type="button" onClick={handleClick}>{a}</button><br /></>)}
+        {(qa[qIndex]).answers.map(a => <><button key={`answers-${qIndex}`} type="button" onClick={handleClick}>{a}</button><br /></>)}
       </div>
     </div>
   </RoomDesireStyles>

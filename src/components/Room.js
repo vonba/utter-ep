@@ -27,22 +27,24 @@ const RoomStyles = styled.div`
   }
 `;
 
+// TODO: Move to separate file, merge with rooms variable in RoomSwitcher
 const videoNames = {
   desire: "desire.mov",
   "it-shines": "it-shines.mov",
   "sound-and-touch": "sound-and-touch.mov",
 };
 
-export default function Room({ roomName }) {
+export default function Room({ roomName, paused }) {
   const videoName = videoNames[roomName];
 
   const nextRoom = () => {
     // TODO: move to the next room
+    console.log("Next video")
   };
 
   return (
     <RoomStyles>
-      <VideoBackground videoName={videoName} handleVideoEnd={nextRoom} />
+      <VideoBackground paused={paused} videoName={videoName} handleVideoEnd={nextRoom} />
       {roomName === "desire" && (
         <div className="roomWrapper">
           <RoomDesire className="room" />

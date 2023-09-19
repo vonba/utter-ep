@@ -7,9 +7,21 @@ body {
   padding: 0;
   font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
   font-weight: 200;
+  background-color: black;
+  color: white;
 }
 
 button {
   font-family: 'Helvetica Neue', 'Helvetica', sans-serif;
   font-weight: 400;
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1em;
 }
