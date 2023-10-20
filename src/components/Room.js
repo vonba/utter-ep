@@ -3,6 +3,7 @@ import VideoBackground from "./VideoBackground";
 import RoomDesire from "./RoomDesire";
 import RoomItShines from "./RoomItShines";
 import RoomSoundAndTouch from "./RoomSoundAndTouch";
+import rooms from "../lib/rooms";
 
 const RoomStyles = styled.div`
   position: fixed;
@@ -27,15 +28,8 @@ const RoomStyles = styled.div`
   }
 `;
 
-// TODO: Move to separate file, merge with rooms variable in RoomSwitcher
-const videoNames = {
-  desire: "desire.mov",
-  "it-shines": "it-shines.mov",
-  "sound-and-touch": "sound-and-touch.mov",
-};
-
 export default function Room({ roomName, paused }) {
-  const videoName = videoNames[roomName];
+  const videoName = rooms[roomName].videoFile;
 
   const nextRoom = () => {
     // TODO: move to the next room

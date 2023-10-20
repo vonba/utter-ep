@@ -2,6 +2,7 @@ import styled from "styled-components";
 import getRandomInteger from "../lib/getRandomInteger";
 import RoomWheel from "./RoomWheel";
 import { useState } from "react";
+import rooms from "../lib/rooms";
 
 const RoomSwitcherStyles = styled.div`
   position: absolute;
@@ -47,19 +48,16 @@ const RoomSwitcherStyles = styled.div`
   }
 `;
 
-const rooms = [
-  {roomName: 'desire', label: 'Desire'},
-  {roomName: 'it-shines', label: 'It Shines'},
-  {roomName: 'sound-and-touch', label: 'Sound & Touch'},
-]
-
-export default function RoomSwitcher({roomName, setRoomName, paused, setPaused}) {
+export default function RoomSwitcher({roomName, setRoomName, paused, setPaused, roomsLeft, setRoomsLeft}) {
+  // General state of switcher
   const [isOpen, setIsOpen] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
-  const [showRoomName, setShowRoomName] = useState(roomName);
-  const [roomsLeft, setRoomsLeft] = useState(Object.keys(rooms));
+  const [nextRoomName, setNextRoomName] = useState(roomName);
 
-  // TODO: Move to App.js
+  console.log({roomName, nextRoomName});
+  console.log(roomsLeft);
+
+  // Switch to a new random room
   const handleRoomSwitch = () => {
     if (!isOpen) {
       setIsOpen(true);
@@ -71,20 +69,21 @@ export default function RoomSwitcher({roomName, setRoomName, paused, setPaused})
       // Only one room left? Then just pick that
       if (roomsLeft.length === 1) {
         newIndex = Object.keys(rooms).indexOf(roomsLeft[0]);
-        // Also set all rooms as unvisited
+        // Also set all rooms as unvisited for next skip
         setRoomsLeft(Object.keys(rooms));
       } else {
-        // If rooms left doesn't include the random room, randomize again
-        while (!roomsLeft.includes(Object.keys(rooms)[newIndex])) {
+        // If we already visited the random room, randomize again
+        while (
+          !roomsLeft.includes(Object.keys(rooms)[newIndex])
+        ) {
           newIndex = getRandomInteger(0, Object.keys(rooms).length - 1);
         }
         // Remove room from rooms left
         setRoomsLeft(roomsLeft.filter(r => r !== Object.keys(rooms)[newIndex]))
       }
 
-
-      const newRoomName = rooms[newIndex].roomName;
-      setShowRoomName(Object.keys(rooms)[newIndex]);
+      const newRoomName = Object.keys(rooms)[newIndex];
+      setNextRoomName(newRoomName);
       setTimeout(() => {
         setIsMoving(false);
         setTimeout(() => {
@@ -98,12 +97,13 @@ export default function RoomSwitcher({roomName, setRoomName, paused, setPaused})
     }
   }
 
+  // Pause/play
   const handlePause = () => {
     setPaused(!paused);
   }
 
   return <RoomSwitcherStyles className={isOpen ? 'open' : 'close'}>
-    <RoomWheel currentRoom={showRoomName} rooms={rooms} isMoving={isMoving} />
+    <RoomWheel currentRoom={nextRoomName} rooms={rooms} isMoving={isMoving} />
     {!isOpen && <div className="buttons">
         <button className={`pause ${paused ? 'paused' : ''}`} onClick={handlePause} type="button" />
         <button className={`changeRoom ${paused ? 'paused' : ''}`} onClick={handleRoomSwitch} type="button" />

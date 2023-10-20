@@ -43,21 +43,21 @@ const RoomWheelStyles = styled.div`
 `;
 
 export default function RoomWheel({ currentRoom, rooms, isMoving }) {
-  const sliceAngle = 360 / rooms.length;
+  const sliceAngle = 360 / Object.keys(rooms).length;
   const offset = Object.keys(rooms).indexOf(currentRoom);
 
   return (
     <RoomWheelStyles>
       <div className="wrapper">
-        {rooms.map((room, index) => (
+        {Object.keys(rooms).map((roomName, index) => (
           <div
             className={`slice ${index === offset ? 'current' : ''} ${isMoving ? 'isMoving' : ''}`}
-            key={room.roomName}
+            key={roomName}
             style={{
               transform: `rotate(${sliceAngle * (index + offset)}deg)`,
             }}
           >
-            {room.label}
+            {rooms[roomName].label}
           </div>
         ))}
       </div>

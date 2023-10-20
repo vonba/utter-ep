@@ -31,7 +31,7 @@ const RoomDesireStyles = styled.div`
     text-align: center;
     color: white;
     font-size: 2rem;
-    width: 40%;
+    width: 22em;
     margin: 0 auto;
 
     &.fadeIn {
@@ -62,7 +62,7 @@ const RoomDesireStyles = styled.div`
 
 const qa = [
   {
-    question: "You see a small dog bleeding in a waste basket. It is high noon.",
+    question: "You see a small dog bleeding in a waste basket.",
     answers: ["Look more closely at the dog", "Throw old receipts in basket", "Use hoover"],
   },
   {
@@ -164,7 +164,7 @@ export default function RoomDesire() {
     <div className="questionWrapper">
       <div className={`question ${fade}`}>
         <p>{(qa[qIndex]).question}</p>
-        {(qa[qIndex]).answers.map(a => <><button key={`answers-${qIndex}`} type="button" onClick={handleClick}>{a}</button><br /></>)}
+        {(qa[qIndex]).answers.map((a, aIndex) => <div key={`answers-${aIndex}`}><button type="button" onClick={handleClick}>{a}</button><br /></div>)}
       </div>
     </div>
   </RoomDesireStyles>

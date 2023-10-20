@@ -160,7 +160,7 @@ export default function RoomItShines() {
 
   return (
     <RoomItShinesStyles>
-      {wordElements.map(e => <span class={`words ${spin}`} style={e.styles}>{e.contents}</span>)}
+      {wordElements.map((e, index) => <span key={`word-${index}`} className={`words ${spin}`} style={e.styles}>{e.contents}</span>)}
       <button type="button" className="flip" onClick={changePositions}>Flip!</button>
       <button type="button" className="spin" onClick={changePositionsSpin}>Spin!</button>
     </RoomItShinesStyles>
