@@ -7,6 +7,7 @@ const VideoBackgroundStyles = styled.div`
   top: 0;
   width: 100vw;
   height: 100vh;
+  background-color: black;
 
   video {
     object-fit: cover;
@@ -15,7 +16,7 @@ const VideoBackgroundStyles = styled.div`
   }
 `;
 
-export default function VideoBackground({videoName, paused, handleVideoEnd}) {
+export default function VideoBackground({videoName, paused, handleVideoEnd, videoStyles, videoBgStyles}) {
   const videoRef = useRef(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
@@ -52,8 +53,8 @@ export default function VideoBackground({videoName, paused, handleVideoEnd}) {
     };
   }, [handleVideoEnd]);
 
-  return <VideoBackgroundStyles>
-    <video ref={videoRef} autoPlay={true} src={`${process.env.PUBLIC_URL}/video/${videoName}`} />
+  return <VideoBackgroundStyles style={videoBgStyles}>
+    <video style={videoStyles} ref={videoRef} autoPlay={true} src={`${process.env.PUBLIC_URL}/video/${videoName}`} />
     {/* <video autoPlay={true} src={`${process.env.PUBLIC_URL}/video/${videoName}`} /> */}
   </VideoBackgroundStyles>
 }

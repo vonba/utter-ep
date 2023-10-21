@@ -3,6 +3,7 @@ import getRandomInteger from "../lib/getRandomInteger";
 import RoomWheel from "./RoomWheel";
 import { useState } from "react";
 import rooms from "../lib/rooms";
+import { useEffect } from "react";
 
 const RoomSwitcherStyles = styled.div`
   position: absolute;
@@ -48,14 +49,28 @@ const RoomSwitcherStyles = styled.div`
   }
 `;
 
-export default function RoomSwitcher({roomName, setRoomName, paused, setPaused, roomsLeft, setRoomsLeft}) {
+export default function RoomSwitcher({
+  roomName, 
+  setRoomName, 
+  paused, 
+  setPaused, 
+  roomsLeft, 
+  setRoomsLeft,
+  ended,
+  setEnded,
+}) {
   // General state of switcher
   const [isOpen, setIsOpen] = useState(false);
   const [isMoving, setIsMoving] = useState(false);
   const [nextRoomName, setNextRoomName] = useState(roomName);
 
-  console.log({roomName, nextRoomName});
-  console.log(roomsLeft);
+  useEffect(() => {
+    if (ended) {
+      handleRoomSwitch();
+      setEnded(false);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ended])
 
   // Switch to a new random room
   const handleRoomSwitch = () => {

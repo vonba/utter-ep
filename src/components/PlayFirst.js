@@ -2,7 +2,11 @@ import styled from "styled-components";
 
 const PlayFirstStyles = styled.div`
   max-width: 25em;
-  margin: 20em auto;
+  margin: auto;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 
   button {
     width: 100%;

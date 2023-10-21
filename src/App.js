@@ -8,10 +8,12 @@ import getRandomInteger from "./lib/getRandomInteger";
 
 function App() {
   const firstIndex = getRandomInteger(0, Object.keys(rooms).length - 1);
-  const firstRoom = Object.keys(rooms)[firstIndex];
+  let firstRoom = Object.keys(rooms)[firstIndex];
+  firstRoom = 'test';
 
   const [roomName, setRoomName] = useState();
   const [paused, setPaused] = useState(false);
+  const [ended, setEnded] = useState(false);
   // Keep track of what rooms left to show (since order is random)
   const [roomsLeft, setRoomsLeft] = useState(
     Object.keys(rooms).filter(r => r !== firstRoom) // Avoid repeating initial room
@@ -27,8 +29,10 @@ function App() {
             setPaused={setPaused} 
             roomsLeft={roomsLeft}
             setRoomsLeft={setRoomsLeft}
+            ended={ended}
+            setEnded={setEnded}
           />
-          <Room roomName={roomName} setRoomName={setRoomName} paused={paused} />
+          <Room setEnded={setEnded} roomName={roomName} setRoomName={setRoomName} paused={paused} />
         </>}
         {!roomName && <PlayFirst setRoomName={setRoomName} firstRoom={firstRoom} />}
     </div>
