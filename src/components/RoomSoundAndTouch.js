@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import SoundAndTouchVideo from "./SoundAndTouchVideo";
 
 const RoomSoundAndTouchStyles = styled.div`
   position: fixed;
@@ -39,18 +40,24 @@ const RoomSoundAndTouchStyles = styled.div`
     height: 0;
     padding-bottom: 30%;
     border: ${({ selected }) => (selected ? "10px solid white" : "none")}; /* Add white border if selected */
-  }
+    z-index: 1;
 
-  label {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: center;
+    &.current {
+      border: 4px solid white;
+    }
+
+    label {
+      z-index: 2;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      text-align: center;
+    }
   }
 
   video {
@@ -81,66 +88,77 @@ const RoomSoundAndTouchStyles = styled.div`
   }
 `;
 
-export default function RoomSoundAndTouch() {
-  const [selectedVideo, setSelectedVideo] = useState(null);
-  const [selectedVideoIndex, setSelectedVideoIndex] = useState(null); /* Added state to track selected video */
+const newVideos = [
+  {
+    source: "coyote_compressed.mov",
+    label: (
+      <>
+        <span className="kumar-font">મ્tમ્યાંo</span>
+        <span className="kumar-font">મ્યાંptમ્o</span>
+        <span className="bitter-font">чел</span>
+      </>
+    ),
+  },
+  {
+    source: "deer_compressed.mov",
+    label: (
+      <>
+        <span className="kumar-font">મ્tમ્યાંo</span>
+        <span className="kumar-font">મ્યાંptમ્o</span>
+        <span className="bitter-font">чел</span>
+      </>
+    ),
+  },
+  {
+    source: "owl_compressed.mov",
+    label: (
+      <>
+        <span className="kumar-font">મ્tમ્યાંo</span>
+        <span className="kumar-font">મ્યાંptમ્o</span>
+        <span className="bitter-font">чел</span>
+      </>
+    ),
+  },
+];
 
-  const handleSourceButtonClick = () => {
-    const newVideos = [
-      "public/video/compressed-videos/coyote_compressed.mov",
-      "public/video/compressed-videos/deer_compressed.mov",
-      "public/video/compressed-videos/owl_compressed.mov",
-    ];
-    const randomIndex = Math.floor(Math.random() * newVideos.length);
-    setSelectedVideo(newVideos[randomIndex]);
+export default function RoomSoundAndTouch() {
+  const [selectedVideoIndex, setSelectedVideoIndex] = useState(); /* Added state to track selected video */
+  const [choiceConfirmed, setChoiceConfirmed] = useState(false);
+
+  // useEffect(() => {
+  //   console.log('happens once')
+  // }, [])
+
+  const handleSelection = () => {
+    const selectedVideo = newVideos[selectedVideoIndex];
+
+    // const randomIndex = Math.floor(Math.random() * newVideos.length);
+    // setSelectedVideo(newVideos[randomIndex]);
   };
 
   return (
     <RoomSoundAndTouchStyles>
       <div className="header">મ્યાંt iл a cમ્oice</div>
-      <div className="panel">
-        <div className="video-container" selected={selectedVideoIndex === 0}>
-          <label>
-            <span className="kumar-font">મ્યાંptમ્o</span>
-            <span className="bitter-font">чел</span>
-            <span className="kumar-font">મ્tમ્યાંo</span>
-          </label>
-          <video
-            src={`${process.env.PUBLIC_URL}/video/compressed/coyote_compressed.mov`}
-            alt="Video 1"
-            loop
-            muted
-            autoPlay
-            playsInline
-            onClick={() => setSelectedVideoIndex(0)} // onClick event to select this video
-          />
+
+      {choiceConfirmed && <div>Thanks!</div>}
+
+      {!choiceConfirmed && (
+        <div className="panel">
+          {newVideos.map((video, index) => {
+            return (
+              <SoundAndTouchVideo
+                key={`video-${index}`}
+                video={video}
+                isCurrent={index === selectedVideoIndex}
+                index={index}
+                setSelectedVideoIndex={setSelectedVideoIndex}
+              />
+            );
+          })}
         </div>
-        <div className="video-container" selected={selectedVideoIndex === 1}>
-          <label>Option 2</label>
-          <video
-            src={`${process.env.PUBLIC_URL}/video/compressed/deer_compressed.mov`}
-            alt="Video 2"
-            loop
-            muted
-            autoPlay
-            playsInline
-            onClick={() => setSelectedVideoIndex(1)} // onClick event to select this video
-          />
-        </div>
-        <div className="video-container" selected={selectedVideoIndex === 2}>
-          <label>Option 3</label>
-          <video
-            src={`${process.env.PUBLIC_URL}/video/compressed/owl_compressed.mov`}
-            alt="Video 3"
-            loop
-            muted
-            autoPlay
-            playsInline
-            onClick={() => setSelectedVideoIndex(2)} // onClick event to select this video
-          />
-        </div>
-      </div>
-      <button className="button" onClick={handleSourceButtonClick}>
+      )}
+
+      <button type="button" className="button" onClick={() => setChoiceConfirmed(true)}>
         CલીOICE
       </button>
     </RoomSoundAndTouchStyles>

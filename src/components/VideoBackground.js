@@ -16,6 +16,7 @@ const VideoBackgroundStyles = styled.div`
   }
 `;
 
+<<<<<<< Updated upstream
 export default function VideoBackground({videoName, paused, handleVideoEnd, videoStyles, videoBgStyles}) {
   const videoRef = useRef(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -58,3 +59,13 @@ export default function VideoBackground({videoName, paused, handleVideoEnd, vide
     {/* <video autoPlay={true} src={`${process.env.PUBLIC_URL}/video/${videoName}`} /> */}
   </VideoBackgroundStyles>
 }
+=======
+export default function VideoBackground({ videoName, handleVideoEnd }) {
+  // TODO: call handleVideoEnd when video finishes
+  return (
+    <VideoBackgroundStyles>
+      <video autoPlay={true} src={`${process.env.PUBLIC_URL}/video/${videoName}`} />
+    </VideoBackgroundStyles>
+  );
+}
+>>>>>>> Stashed changes
