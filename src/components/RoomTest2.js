@@ -1,13 +1,29 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled from "styled-components";
 
-const minSpeed = 10;
-const maxSpeed = 20;
-const maxPoison = 333;
+const minSpeed = 8;
+const maxSpeed = 15;
+const maxPoison = 444;
 const wormColor = 'rgba(154, 66, 66, 0.9)';
+const lineColor = "rgba(87, 99, 101, 0.1)";
 const wormSize = 20;
 
 const RoomTest2Styles = styled.div`
+  @keyframes pulsate {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+  }
+
   position: relative;
   width: 100%;
   height: 100vh;
@@ -15,20 +31,51 @@ const RoomTest2Styles = styled.div`
   cursor: url("/poison-white.svg"), auto;
 
   .drawingCounter {
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-    height: 4rem;
+    top: 0;
+    left: 0;
     background: white url("/poison.svg") left no-repeat;
-    background-size: contain;
-    padding: 1rem 1rem 1rem 4rem;
-    color: black;
-    line-height: 2.2rem;
 
     @media (max-width: 800px) {
       top: unset;
       bottom: 0;
-      right: 0;
+    }
+  }
+  .collisions {
+    margin: 0;
+    top: 4rem;
+    left: 0;
+    background: rgba(154, 66, 66, 0.9) url("/bug-bw.svg") 0.25em no-repeat;
+    border: none;
+
+    @media (max-width: 800px) {
+      top: unset;
+      bottom: 0;
+    }
+  }
+
+  .counter {
+    position: absolute;
+    height: 4rem;
+    background-size: 3em;
+    text-align: right;
+    padding: 1rem;
+    color: black;
+    line-height: 2.2rem;
+    width: 6rem;
+  }
+
+  &.outOfPoison {
+    .collisions {
+      cursor: pointer;
+      animation: pulsate infinite 2s;
+      width: 10em;
+      height: 10em;
+      left: calc(50% - 5em);
+      top: calc(50% - 5em);
+      color: white;
+      font-size: 2rem;
+      padding: 2em;
+      background-position: 2em center;
     }
   }
 `;
@@ -41,17 +88,31 @@ const Canvas = styled.canvas`
   height: 100%;
 `;
 
+const getNewWormCoordinates = (canvasWidth, canvasHeight) => {
+  let newXProb = Math.random();
+  newXProb = Math.min(newXProb, 0.8);
+  newXProb = Math.max(newXProb, 0.2);
+  let newYProb = Math.random();
+  newYProb = Math.min(newYProb, 0.8);
+  newYProb = Math.max(newYProb, 0.2);
+  const dpr = window.devicePixelRatio || 1;
+  const x = newXProb / dpr * canvasWidth;
+  const y = newYProb / dpr * canvasHeight;
+  return {x, y};
+}
+
 export default function RoomTest2() {
   const canvasRef = useRef(null);
   const canvasRefWorm = useRef(null);
   const [context, setContext] = useState(null);
   const [contextWorm, setContextWorm] = useState(null);
-  
+
   // Default worm
   const [hasCollided, setHasCollided] = useState(false);
+  const [collisions, setCollisions] = useState(0);
   const [worm, setWorm] = useState({
-    x: 200,
-    y: 200,
+    x: (window.innerWidth || document.documentElement.clientWidth) / 2,
+    y: (window.innerHeight || document.documentElement.clientHeight) / 2,
     color: wormColor,
     size: wormSize,
     speed: Math.random() * (maxSpeed - minSpeed) + minSpeed,
@@ -60,8 +121,8 @@ export default function RoomTest2() {
 
   // Drawing stuff
   const [drawing, setDrawing] = useState(false);
-  const [userLineColor, setUserLineColor] = useState("rgba(87, 99, 101, 0.1)");
-  const [drawingCounter, setDrawingCounter] = useState(maxPoison);
+  const [userLineColor, setUserLineColor] = useState(lineColor);
+  const [drawingCounter, setDrawingCounter] = useState(0);
 
   // Set up canvases
   useEffect(() => {
@@ -83,8 +144,11 @@ export default function RoomTest2() {
 
     // Start the worm movement
     const intervalId = setInterval(() => {
-      moveWorm();
-    }, 500);
+      setDrawingCounter(counter => {
+        if(counter > 0) moveWorm();
+        return counter;
+      })
+    }, 200);
 
     // Clean up the interval when the component unmounts
     return () => clearInterval(intervalId);
@@ -96,20 +160,16 @@ export default function RoomTest2() {
       const canvasWidth = canvasRefWorm.current.width;
       const canvasHeight = canvasRefWorm.current.height;
 
+      setCollisions(collisions + 1);
+
       // Clear worm canvas
       contextWorm.clearRect(0, 0, canvasWidth, canvasHeight);
-      let newXProb = Math.random();
-      newXProb = Math.min(newXProb, 0.8);
-      newXProb = Math.max(newXProb, 0.2);
-      let newYProb = Math.random();
-      newYProb = Math.min(newYProb, 0.8);
-      newYProb = Math.max(newYProb, 0.2);
-      const dpr = window.devicePixelRatio || 1;
+      const {x, y} = getNewWormCoordinates(canvasWidth, canvasHeight);
       
       // Reset worm position with new initial values
       setWorm((prevWorm) => ({
-        x: newXProb / dpr * canvasWidth,
-        y: newYProb / dpr * canvasHeight,
+        x,
+        y,
         color: wormColor,
         size: wormSize,
         speed: Math.random() * (maxSpeed - minSpeed) + minSpeed,
@@ -119,38 +179,17 @@ export default function RoomTest2() {
     }
   }, [hasCollided, contextWorm]);
 
-  // UNUSED: paint random pixels
-  // const paintOverUser = () => {
-  //   if (!context) return; // Ensure context is available
-  //   const dpr = window.devicePixelRatio || 1;
-  //   const canvasWidth = canvasRef.current.width;
-  //   const canvasHeight = canvasRef.current.height;
-
-  //   const x = Math.random() * canvasWidth;
-  //   const y = Math.random() * canvasHeight;
-  
-  //   // Write a pixel
-  //   const imageData = context.getImageData(x, y, 1, 1);
-  //   const data = imageData.data;
-  //   data[0] = 0;
-  //   data[1] = 0;
-  //   data[2] = 0;
-  //   data[3] = 255;
-  //   context.globalCompositeOperation = "source-over"; // Reset composite operation
-  //   context.putImageData(imageData, x, y);
-  // }
-
   // Move the worm
   const moveWorm = () => {
     if (!context) return; // Ensure context is available
-
+    
     // Use a callback function to ensure the state update is complete
     setWorm((prevWorm) => {
       const newWorm = { ...prevWorm };
 
       // Change direction at certain intervals
-      if (Math.random() < 0.3) {
-        const angleChange = (Math.random() - 0.44) * 60; // Random change in direction within a range
+      if (Math.random() < 0.2) {
+        const angleChange = (Math.random() - 0.34) * 60; // Random change in direction within a range
         newWorm.direction += angleChange;
       }
 
@@ -200,7 +239,7 @@ export default function RoomTest2() {
 
   // Start drawing
   const handleMouseDown = (e) => {
-    if (!context) return; // Ensure context is available
+    if (!context || drawingCounter === 0) return; // Ensure context is available
     setDrawing(true);
     const { offsetX, offsetY } = e.nativeEvent;
     context.beginPath();
@@ -210,7 +249,8 @@ export default function RoomTest2() {
 
   // Draw
   const handleMouseMove = (e) => {
-    if (!context || !drawing) return; // Ensure context is available
+    if (drawingCounter === 0) setDrawing(false);
+    if (!context || !drawing || drawingCounter === 0) return; // Ensure context is available
     const { offsetX, offsetY } = e.nativeEvent;
     context.lineWidth = wormSize;
     context.lineCap = "round";
@@ -222,13 +262,20 @@ export default function RoomTest2() {
   // React to counter 0
   useEffect(() => {
     if (drawingCounter === 0) {
-      setDrawingCounter(maxPoison);
       const canvasWidth = canvasRef.current.width;
       const canvasHeight = canvasRef.current.height;
+      if (!context) return;
       context.clearRect(0, 0, canvasWidth, canvasHeight);
       contextWorm.clearRect(0, 0, canvasWidth, canvasHeight);
     }
   }, [drawingCounter])
+
+  const resetCounters = () => {
+    if (drawingCounter === 0) {
+      setCollisions(0)
+      setDrawingCounter(maxPoison);
+    }
+  }
 
   // Stop drawing
   const handleMouseUp = () => {
@@ -236,7 +283,7 @@ export default function RoomTest2() {
   };
 
   return (
-    <RoomTest2Styles>
+    <RoomTest2Styles className={drawingCounter === 0 ? 'outOfPoison' : ''}>
       <Canvas
         ref={canvasRefWorm}
       />
@@ -246,9 +293,12 @@ export default function RoomTest2() {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       />
-      <div className="drawingCounter">
+      <div className="counter drawingCounter">
         {drawingCounter}
       </div>
+      <button className="counter collisions" onClick={resetCounters}>
+        {collisions}
+      </button>
     </RoomTest2Styles>
   );
 }

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const PlayFirstStyles = styled.div`
-  max-width: 25em;
+  /* max-width: 25em; */
   margin: auto;
   height: 100vh;
   display: flex;
@@ -16,8 +16,8 @@ const PlayFirstStyles = styled.div`
     background: transparent url("24-cover-bw.png") center no-repeat;
     background-size: contain;
     /* filter: invert(100%); */
-    height: 25em;
-    margin-bottom: 4em;
+    height: 33vh;
+    margin-bottom: 3em;
   }
 
   h1 {
@@ -25,9 +25,7 @@ const PlayFirstStyles = styled.div`
   }
 
   .blurb {
-    @media (max-width: 800px) {
-      max-width: 14em;
-    }
+    max-width: 14em;
   }
 `;
 
@@ -36,10 +34,10 @@ export default function PlayFirst({ firstRoom, setRoomName }) {
   return (
     <PlayFirstStyles>
       <div className="logo"></div>
-      <h1>24-Hour Fur Coat Store</h1>
-      <p className="blurb">
+      {/* <h1>24-Hour Fur Coat Store</h1> */}
+      {/* <p className="blurb">
         Interactive presentation of the classic Utter album
-      </p>
+      </p> */}
       <button type="button" onClick={() => setRoomName(firstRoom)}>Begin</button>
     </PlayFirstStyles>
   );

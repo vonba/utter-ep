@@ -11,16 +11,17 @@ const CreditsStyles = styled.div`
   }
   @keyframes rotate-in {
     0% {
-      transform: scaleX(-1);
+      transform: scale(0.93);
     }
     100% {
-      transform: scaleX(1);
+      transform: scale(1);
     }
   }
 
   position: fixed;
   z-index: 99;
-  background-color: rgba(0, 0, 0, 0.6);
+  /* background-color: rgba(0, 0, 0, 0.6); */
+  background-color: black;
   width: 100%;
   height: 100vh;
   top: 0;
@@ -29,7 +30,7 @@ const CreditsStyles = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: fade-in 1s;
+  /* animation: fade-in 1s; */
 
   header {
     margin-bottom: 2em;
@@ -41,19 +42,27 @@ const CreditsStyles = styled.div`
 
   h2 {
     font-size: 50px;
+    margin: 0 auto 0.25em auto;
+    @media (max-width: 800px) {
+      max-width: 5em;
+    }
   }
 
   .creditsWrapper {
-    background-color: black;
-    border: 3px solid white;
+    /* background-color: black; */
     width: 100%;
-    max-width: 33em;
     height: auto;
     padding: 2em;
     text-align: center;
-    animation: rotate-in 1s;
+    animation: rotate-in 6s, fade-in 4s;
     max-height: 100%;
     overflow-y: auto;
+    
+    p {
+      max-width: 26em;
+      margin-left: auto;
+      margin-right: auto;
+    }
   }
 
   button {
@@ -71,7 +80,6 @@ export default function Credits({setCreditsVisible}) {
   return <CreditsStyles>
     <div className="creditsWrapper">
       <header>
-        <p>you are listening to</p>
         <h2>24-Hour Fur Coat Store</h2>
         <h3>by UTTER</h3>
       </header>
@@ -93,7 +101,7 @@ export default function Credits({setCreditsVisible}) {
         Bookings/press <a href="mailto:hola@utter.band">hola@utter.band</a>
       </p>
       <p>
-        <button type="button" onClick={() => setCreditsVisible(false)}>Close</button>
+        <button type="button" onClick={() => setCreditsVisible(false)}>yes</button>
       </p>
     </div>
   </CreditsStyles>
