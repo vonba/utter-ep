@@ -5,6 +5,7 @@ const minSpeed = 10;
 const maxSpeed = 20;
 const maxPoison = 333;
 const wormColor = 'rgba(154, 66, 66, 0.9)';
+const wormSize = 20;
 
 const RoomTest2Styles = styled.div`
   position: relative;
@@ -20,10 +21,17 @@ const RoomTest2Styles = styled.div`
     height: 4rem;
     background: white url("/poison.svg") left no-repeat;
     background-size: contain;
-    padding: 1rem 1rem 1rem 6rem;
+    padding: 1rem 1rem 1rem 4rem;
     color: black;
+    line-height: 2.2rem;
+
+    @media (max-width: 800px) {
+      top: unset;
+      bottom: 0;
+      right: 0;
+    }
   }
-  `;
+`;
 
 const Canvas = styled.canvas`
   position: absolute;
@@ -45,7 +53,7 @@ export default function RoomTest2() {
     x: 200,
     y: 200,
     color: wormColor,
-    size: 20,
+    size: wormSize,
     speed: Math.random() * (maxSpeed - minSpeed) + minSpeed,
     direction: 45,
   });
@@ -103,7 +111,7 @@ export default function RoomTest2() {
         x: newXProb / dpr * canvasWidth,
         y: newYProb / dpr * canvasHeight,
         color: wormColor,
-        size: prevWorm.size,
+        size: wormSize,
         speed: Math.random() * (maxSpeed - minSpeed) + minSpeed,
         direction: Math.random() * 360,
       }));
@@ -111,26 +119,26 @@ export default function RoomTest2() {
     }
   }, [hasCollided, contextWorm]);
 
-  // UNUSED: paint over drawing
-  const paintOverUser = () => {
-    if (!context) return; // Ensure context is available
-    const dpr = window.devicePixelRatio || 1;
-    const canvasWidth = canvasRef.current.width;
-    const canvasHeight = canvasRef.current.height;
+  // UNUSED: paint random pixels
+  // const paintOverUser = () => {
+  //   if (!context) return; // Ensure context is available
+  //   const dpr = window.devicePixelRatio || 1;
+  //   const canvasWidth = canvasRef.current.width;
+  //   const canvasHeight = canvasRef.current.height;
 
-    const x = Math.random() * canvasWidth;
-    const y = Math.random() * canvasHeight;
+  //   const x = Math.random() * canvasWidth;
+  //   const y = Math.random() * canvasHeight;
   
-    // Write a pixel
-    const imageData = context.getImageData(x, y, 1, 1);
-    const data = imageData.data;  
-    data[0] = 0;
-    data[1] = 0;
-    data[2] = 0;
-    data[3] = 255;
-    context.globalCompositeOperation = "source-over"; // Reset composite operation
-    context.putImageData(imageData, x, y);
-  }
+  //   // Write a pixel
+  //   const imageData = context.getImageData(x, y, 1, 1);
+  //   const data = imageData.data;
+  //   data[0] = 0;
+  //   data[1] = 0;
+  //   data[2] = 0;
+  //   data[3] = 255;
+  //   context.globalCompositeOperation = "source-over"; // Reset composite operation
+  //   context.putImageData(imageData, x, y);
+  // }
 
   // Move the worm
   const moveWorm = () => {
@@ -188,11 +196,6 @@ export default function RoomTest2() {
 
       return newWorm;
     });
-
-    // for (let i = 0; i < 10000; i++) {
-    //   paintOverUser();
-    // }
-
   };
 
   // Start drawing
@@ -209,7 +212,7 @@ export default function RoomTest2() {
   const handleMouseMove = (e) => {
     if (!context || !drawing) return; // Ensure context is available
     const { offsetX, offsetY } = e.nativeEvent;
-    context.lineWidth = worm.size;
+    context.lineWidth = wormSize;
     context.lineCap = "round";
     context.lineTo(offsetX, offsetY);
     context.stroke();

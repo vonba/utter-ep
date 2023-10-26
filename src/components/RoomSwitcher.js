@@ -14,29 +14,66 @@ const RoomSwitcherStyles = styled.div`
   z-index: 1;
   background-color: black;
   transition: height 1s;
-
+  
   .buttons {
     position: absolute;
     text-align: center;
     width: 100%;
   }
 
+  .label {
+    @media (max-width: 800px) {
+      display: none;
+    }
+  }
+  
+  .nowPlaying,
   button {
+    font-size: 0.8em;
+    vertical-align: top;
+    font-weight: 200;
     display: inline-block;
     border: none;
-    bottom: -2.25em;
-    width: 3em;
-    height: 2.25em;
+    /* bottom: -2.25em; */
+    width: auto;
+    height: 2.5em;
     cursor: pointer;
-    background: black url("/skip.svg") center no-repeat;
+    color: white;
+    padding: 0.5em 1em;
+    margin-left: 1px;
+    margin-top: 0;
+    border: 1px solid transparent;   
+    background-color: black;
+    text-transform: uppercase; 
+    
+    @media (max-width: 800px) {
+      font-size: 0.7em;
+    }
+  }
+  
+  button {
+    background: black url("/skip.svg") calc(100% - 1em) center no-repeat;
     background-size: 1em;
+  }
+
+  button:hover {
+    border-color: white;
+  }
+
+  .about {
+    background-image: none;
+    font-weight: bold;
   }
   
   .changeRoom {
     background-image: url("/skip.svg");
+    padding-left: 2.3em;
+    background-size: 1.3em;
   }
   
   .pause {
+    padding-left: 2.3em;
+    background-size: 1.3em;
     background-image: url("/pause.svg");
     
     &.paused {
@@ -126,8 +163,13 @@ export default function RoomSwitcher({
   return <RoomSwitcherStyles className={isOpen ? 'open' : 'close'}>
     <RoomWheel currentRoom={nextRoomName} rooms={rooms} isMoving={isMoving} />
     {!isOpen && <div className="buttons">
-        <button className={`pause ${paused ? 'paused' : ''}`} onClick={handlePause} type="button" />
+        <span className="nowPlaying">
+          <span className="label">Now playing: </span>
+          {rooms[roomName].label}
+        </span>
+        <button className={`pause ${paused ? 'paused' : ''}`} onClick={handlePause} type="button"/>
         <button className={`changeRoom ${paused ? 'paused' : ''}`} onClick={handleRoomSwitch} type="button" />
+        <button className="about" onClick={() => setCreditsVisible(true)} type="button">?</button>
       </div>
     }
   </RoomSwitcherStyles>

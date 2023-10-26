@@ -9,6 +9,7 @@ const PlayFirstStyles = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
+  padding: 1em;
 
   .logo {
     width: 100%;
@@ -19,21 +20,13 @@ const PlayFirstStyles = styled.div`
     margin-bottom: 4em;
   }
 
-  button {
-    width: 15em;
-    background: white;
-    border: 2px solid white;
-    color: black;
-    transition: all 1s;
-    cursor: pointer;
-    text-transform: uppercase;
-    padding: 1em 2em;
-    font-weight: bold;
-    margin-top: 2em;
+  h1 {
+    font-size: 50px;
+  }
 
-    &:hover {
-      background-color: black;
-      color: white;
+  .blurb {
+    @media (max-width: 800px) {
+      max-width: 14em;
     }
   }
 `;
@@ -44,7 +37,7 @@ export default function PlayFirst({ firstRoom, setRoomName }) {
     <PlayFirstStyles>
       <div className="logo"></div>
       <h1>24-Hour Fur Coat Store</h1>
-      <p>
+      <p className="blurb">
         Interactive presentation of the classic Utter album
       </p>
       <button type="button" onClick={() => setRoomName(firstRoom)}>Begin</button>

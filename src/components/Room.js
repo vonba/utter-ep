@@ -54,9 +54,7 @@ export default function Room({ roomName, paused, setEnded }) {
         handleVideoEnd={handleVideoEnded}
       />
       {roomName === "desire" && (
-        <div className="roomWrapper">
-          <RoomDesire className="room" />
-        </div>
+        <RoomDesire className="room" />
       )}
       {roomName === "it-shines" && (
         <div className="roomWrapper">

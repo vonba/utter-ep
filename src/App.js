@@ -15,7 +15,7 @@ function App() {
   const [roomName, setRoomName] = useState();
   const [paused, setPaused] = useState(false);
   const [ended, setEnded] = useState(false);
-  const [creditsVisible, setCreditsVisible] = useState(false);
+  const [creditsVisible, setCreditsVisible] = useState(true);
   // Keep track of what rooms left to show (since order is random)
   const [roomsLeft, setRoomsLeft] = useState(
     Object.keys(rooms).filter(r => r !== firstRoom) // Avoid repeating initial room

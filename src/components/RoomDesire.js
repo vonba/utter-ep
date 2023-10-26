@@ -4,6 +4,10 @@ import getRandomInteger from "../lib/getRandomInteger";
 
 const RoomDesireStyles = styled.div`
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
 
   @keyframes fade-in {
     from {
@@ -24,15 +28,21 @@ const RoomDesireStyles = styled.div`
   }
 
   .questionWrapper {
-    padding-top: 20vh;
+    padding: 1em;
   }
 
   .question {
     text-align: center;
     color: white;
-    font-size: 2rem;
-    width: 22em;
+    font-size: 1.5em;
+    width: 100%;
+    max-width: 22em;
     margin: 0 auto;
+    text-shadow: 0 0 1px black;
+    
+    @media (min-width: 800px) {
+      font-size: 2rem;
+    }
 
     &.fadeIn {
       animation: fade-in 1s ease-in;
@@ -44,23 +54,20 @@ const RoomDesireStyles = styled.div`
   }
 
   button {
-    background: white;
-    border: none;
-    color: black;
-    font-size: 1.5rem;
     margin: 0.5rem;
-    padding: 0.5rem 1rem;
-    display: inline-block;
-    cursor: pointer;
-
-    &:hover {
-      background: black;
-      color: white;
-    }
+    width: auto;
   }
 `;
 
 const qa = [
+  {
+    question: "He is approaching. He knows your secret. Your shame will be known to everyone.",
+    answers: ["Jump out the window", "Pretend to be dead", "Use telephone"],
+  },
+  {
+    question: "Far, far away the sound of sirens. You fumble with the burned matches. What have you done?? After a moment of panic, you collect yourself.",
+    answers: ["Find alibi", "Find scapegoat", "Use telephone"],
+  },
   {
     question: "You see a small dog bleeding in a waste basket.",
     answers: ["Look more closely at the dog", "Throw old receipts in basket", "Use hoover"],
@@ -70,20 +77,12 @@ const qa = [
     answers: ["Start a fire", "Look more closely at the dog", "Use knife"],
   },
   {
-    question: "Far, far away the sound of sirens. You fumble with the burned matches. What have you done?? After a moment of panic, you collect yourself.",
-    answers: ["Find alibi", "Find scapegoat", "Use telephone"],
-  },
-  {
     question: "In the beginning, nothing was easy. As you progress, habit takes over and all actions become automatic. Soon you will not have to ever think, react, or analyse. What do you do with the rest of your life?",
     answers: ["Retreat into apathy", "Manipulate those around me for profit", "Use knife"],
   },
   {
     question: "At the far end of the corridor you see a skeleton slumped in a corner. It is made out of solid gold. There is a very bad smell.",
     answers: ["Polish the skeleton", "Drink potion", "Eat the small dog"],
-  },
-  {
-    question: "He is approaching. He knows your secret. Your shame will be known to everyone.",
-    answers: ["Jump out the window", "Pretend to be dead", "Use telephone"],
   },
   {
     question: "Through the window, your mother is calling you to come down to the tennis court. On your bed, the tennis instructor is bleeding to death.",
@@ -102,8 +101,8 @@ const qa = [
     answers: ["Nature is cruel", "The order of things is right and just", "Hail Satan!"],
   },
   {
-    question: "Please let me out of here! I am stuck inside this thing and you have to let me out. I don't want to be in here, it's awful and I am in pain. Let me out!!",
-    answers: ["Not until you have paid your debts!", "What's in it for me?", "Ignore"],
+    question: "Please let me out of here! I am stuck inside this thing and you have to let me out. I don't want to be in here, it's awful and I am in pain.",
+    answers: ["Look at the bright side", "What's in it for me?", "Ignore"],
   },
   {
     question: "From under the locked bathroom door, a growing pool of blood and shit is intruding into your room. You also have the hand of a lifetime in your online poker game.",
