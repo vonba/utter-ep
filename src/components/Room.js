@@ -6,6 +6,7 @@ import RoomSoundAndTouch from "./RoomSoundAndTouch";
 import rooms from "../lib/rooms";
 import RoomTest from "./RoomTest";
 import { useState } from "react";
+import RoomTest2 from "./RoomTest2";
 
 const RoomStyles = styled.div`
   position: fixed;
@@ -46,24 +47,35 @@ export default function Room({ roomName, paused, setEnded }) {
       <VideoBackground 
         videoStyles={videoStyles} 
         videoBgStyles={videoBgStyles} 
+        setVideoStyles={setVideoStyles} 
+        setVideoBgStyles={setVideoBgStyles}
         paused={paused} 
         videoName={videoName} 
         handleVideoEnd={handleVideoEnded}
       />
-      <div className="roomWrapper">
-        {roomName === "desire" && (
+      {roomName === "desire" && (
+        <div className="roomWrapper">
           <RoomDesire className="room" />
-        )}
-        {roomName === "it-shines" && (
+        </div>
+      )}
+      {roomName === "it-shines" && (
+        <div className="roomWrapper">
           <RoomItShines className="room" />
-        )}
-        {roomName === "sound-and-touch" && (
+        </div>
+      )}
+      {roomName === "sound-and-touch" && (
+        <div className="roomWrapper">
           <RoomSoundAndTouch className="room" />
-        )}
-        {roomName === "test" && (
+        </div>
+      )}
+      {roomName === "test" && (
+        <div className="roomWrapper">
           <RoomTest className="room" setVideoStyles={setVideoStyles} setVideoBgStyles={setVideoBgStyles} />
-        )}
-      </div>
+        </div>
+      )}
+      {roomName === "test2" && (
+        <RoomTest2 className="room" setVideoStyles={setVideoStyles} setVideoBgStyles={setVideoBgStyles} />
+      )}
     </RoomStyles>
   );
 }

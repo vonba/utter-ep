@@ -7,9 +7,20 @@ const PlayFirstStyles = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  .logo {
+    width: 100%;
+    background: transparent url("24-cover-bw.png") center no-repeat;
+    background-size: contain;
+    /* filter: invert(100%); */
+    height: 25em;
+    margin-bottom: 4em;
+  }
 
   button {
-    width: 100%;
+    width: 15em;
     background: white;
     border: 2px solid white;
     color: black;
@@ -31,6 +42,7 @@ export default function PlayFirst({ firstRoom, setRoomName }) {
 
   return (
     <PlayFirstStyles>
+      <div className="logo"></div>
       <h1>24-Hour Fur Coat Store</h1>
       <p>
         Interactive presentation of the classic Utter album

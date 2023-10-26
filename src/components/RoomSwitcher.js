@@ -58,6 +58,8 @@ export default function RoomSwitcher({
   setRoomsLeft,
   ended,
   setEnded,
+  creditsVisible,
+  setCreditsVisible
 }) {
   // General state of switcher
   const [isOpen, setIsOpen] = useState(false);
@@ -81,11 +83,15 @@ export default function RoomSwitcher({
       // Pick a random room
       let newIndex = getRandomInteger(0, Object.keys(rooms).length - 1);
       
+      // No rooms left? Show credits
+      if (!roomsLeft.length) {
+        setCreditsVisible(true);
+      }
+
       // Only one room left? Then just pick that
       if (roomsLeft.length === 1) {
         newIndex = Object.keys(rooms).indexOf(roomsLeft[0]);
-        // Also set all rooms as unvisited for next skip
-        setRoomsLeft(Object.keys(rooms));
+        setRoomsLeft([]);
       } else {
         // If we already visited the random room, randomize again
         while (
