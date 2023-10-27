@@ -37,6 +37,7 @@ export default function VideoBackground({
   }, [paused, videoLoaded]);
 
   useEffect(() => {
+    if (!videoRef) return;
     const videoElement = videoRef.current;
 
     const handleLoadedData = () => {
@@ -58,7 +59,8 @@ export default function VideoBackground({
       videoElement.removeEventListener('loadeddata', handleLoadedData);
       videoElement.removeEventListener('ended', handleVideoEnded);
     };
-  }, [handleVideoEnd]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [videoRef]);
 
   return <VideoBackgroundStyles style={videoBgStyles}>
     <video style={videoStyles} ref={videoRef} autoPlay={true} src={`${process.env.PUBLIC_URL}/video/${videoName}`} poster={`${process.env.PUBLIC_URL}/24-cover-bw.png`} />

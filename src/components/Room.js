@@ -53,26 +53,31 @@ export default function Room({ roomName, paused, setEnded }) {
         videoName={videoName} 
         handleVideoEnd={handleVideoEnded}
       />
-      {roomName === "desire" && (
-        <RoomDesire className="room" />
+      {roomName === "sound-and-touch" && (
+        <div className="roomWrapper">
+          <RoomSoundAndTouch className="room" />
+        </div>
       )}
       {roomName === "it-shines" && (
         <div className="roomWrapper">
           <RoomItShines className="room" />
         </div>
       )}
-      {roomName === "sound-and-touch" && (
-        <div className="roomWrapper">
-          <RoomSoundAndTouch className="room" />
-        </div>
+      {roomName === "flash-of-genius" && (
+        <RoomTest2 className="room" />
       )}
-      {roomName === "test" && (
+      {roomName === "cloth-mother-vs-metal-mother" && (
         <div className="roomWrapper">
           <RoomTest className="room" setVideoStyles={setVideoStyles} setVideoBgStyles={setVideoBgStyles} />
         </div>
       )}
-      {roomName === "test2" && (
-        <RoomTest2 className="room" setVideoStyles={setVideoStyles} setVideoBgStyles={setVideoBgStyles} />
+      {roomName === "car-massacre-picnic" && (
+        <RoomDesire className="room" />
+      )}
+      {roomName === "the-killer-is-on-the-phone" && (
+        <div className="roomWrapper">
+          <RoomItShines className="room" />
+        </div>
       )}
     </RoomStyles>
   );

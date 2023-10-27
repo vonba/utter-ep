@@ -10,7 +10,7 @@ import Credits from "./components/Credits";
 function App() {
   const firstIndex = getRandomInteger(0, Object.keys(rooms).length - 1);
   let firstRoom = Object.keys(rooms)[firstIndex];
-  firstRoom = 'test2';
+  firstRoom = 'sound-and-touch';
 
   const [roomName, setRoomName] = useState();
   const [paused, setPaused] = useState(false);

@@ -1,166 +1,160 @@
-import { useState } from "react";
 import styled from "styled-components";
-import SoundAndTouchVideo from "./SoundAndTouchVideo";
+import getRandomInteger from "../lib/getRandomInteger";
+import { useState } from "react";
+
+const colors = ['bisque', 'mediumorchid', 'chocolate', 'transparent'];
 
 const RoomSoundAndTouchStyles = styled.div`
-  position: fixed;
-  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   top: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-top: 40px;
+  left: 0;
+  cursor: pointer;
 
-  .header {
-    border: 10px solid #000;
-    padding: 1rem;
-    font-size: 32px;
-    background-color: white;
-    margin-bottom: 20px;
-  }
-
-  .panel {
-    // background-color: rgba(242, 242, 242, 0.8);
-    padding: 1rem;
-    border-radius: 4px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1rem;
-    width: 90%;
-    justify-content: space-around;
-  }
-
-  .video-container {
-    position: relative;
-    width: 30%;
-    height: 0;
-    padding-bottom: 30%;
-    border: ${({ selected }) => (selected ? "10px solid white" : "none")}; /* Add white border if selected */
-    z-index: 1;
-
-    &.current {
-      border: 4px solid white;
+  @keyframes fade-in {
+    from {
+      opacity: 0;
     }
-
-    label {
-      z-index: 2;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      text-align: center;
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes grow {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.12);
+    }
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0);
+    }
+    50% {
+      transform: rotate(180deg);
+    }
+    100% {
+      transform: rotate(360deg);
     }
   }
 
-  video {
+  .word {
+    color: aliceblue;
+    text-transform: uppercase;
+    display: block;
+    font-size: 2rem;
+  }
+  
+  .wordWrapper {
     position: absolute;
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-  }
+    perspective: 500px;
+    display: block;
+    animation: grow 0.5s infinite;
+    top: 40%;
+    left: 40%;
 
-  .button {
-    padding: 0.5rem 1rem;
-    background-color: white;
-    color: black;
-    border: 5px double black;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: "Bitter", serif;
-    margin-top: 20px;
-  }
-
-  .kumar-font {
-    font-family: "Kumar One Outline", cursive;
-    font-size: 20px;
-  }
-  .bitter-font {
-    font-family: "Bitter", serif;
-    font-size: 20px;
+    &.spin {
+      animation: spin 1s;
+    }
   }
 `;
 
-const newVideos = [
-  {
-    source: "coyote_compressed.mov",
-    label: (
-      <>
-        <span className="kumar-font">મ્tમ્યાંo</span>
-        <span className="kumar-font">મ્યાંptમ્o</span>
-        <span className="bitter-font">чел</span>
-      </>
-    ),
-  },
-  {
-    source: "deer_compressed.mov",
-    label: (
-      <>
-        <span className="kumar-font">મ્tમ્યાંo</span>
-        <span className="kumar-font">મ્યાંptમ્o</span>
-        <span className="bitter-font">чел</span>
-      </>
-    ),
-  },
-  {
-    source: "owl_compressed.mov",
-    label: (
-      <>
-        <span className="kumar-font">મ્tમ્યાંo</span>
-        <span className="kumar-font">મ્યાંptમ્o</span>
-        <span className="bitter-font">чел</span>
-      </>
-    ),
-  },
+const lines = [
+  'There is a mutual antagonism',
+  'Between center and periphery',
+  'He will starve to death',
+  'Surrounded by food',
+  'If it is not moving',
+  'His sex life is conducted by sound and touch',
+  'His vocabulary is restricted',
+  'To types of things',
+  'That he sees in the sky.',
+  'We are still faced with the question',
+  'Of how the animal abstracts',
+  'What is useful to him',
+  'From his surroundings',
 ];
 
-export default function RoomSoundAndTouch() {
-  const [selectedVideoIndex, setSelectedVideoIndex] = useState(); /* Added state to track selected video */
-  const [choiceConfirmed, setChoiceConfirmed] = useState(false);
+const getRandomStyles = (x = null, y = null) => {
+  const orientation = getRandomInteger(0, 3);
+  let transform = 'rotate(0)';
+  if (orientation === 1) transform = 'rotate(45deg)';
+  if (orientation === 2) transform = 'rotate(135deg)';
+  if (orientation === 3) transform = 'rotate(225deg)';
+  const colorIndex = getRandomInteger(0, colors.length - 1);
+  const borderWidth = getRandomInteger(1, 5);
+  const size = getRandomInteger(40, 200);
+  const left = x ? `${x}px` : `${getRandomInteger(-5, 80)}%`;
+  const top = y ? `${y}px` : `${getRandomInteger(-5, 80)}%`;
 
-  // useEffect(() => {
-  //   console.log('happens once')
-  // }, [])
-
-  const handleSelection = () => {
-    const selectedVideo = newVideos[selectedVideoIndex];
-
-    // const randomIndex = Math.floor(Math.random() * newVideos.length);
-    // setSelectedVideo(newVideos[randomIndex]);
+  return {
+    wordStyle: {
+      fontSize: `${getRandomInteger(8, 50) / 10}rem`,
+      transform
+    },
+    wrapperStyle: {
+      left,
+      top,
+      height: `${size}px`,
+      width: `${size}px`,
+      border: `${borderWidth}px solid ${colors[colorIndex]}`,
+    }
   };
+}
+
+const getWordElement = (id, x = null, y = null) => {
+  return {contents: lines[getRandomInteger(0, lines.length - 1)], id, styles: getRandomStyles(x, y), spin: false};
+}
+
+export default function RoomSoundAndTouch() {
+  // Set a first word and remove it
+  const firstId = (Date.now()).toString(16);
+  const [wordElements, setWordElements] = useState([
+    {contents: 'Touch me', id: firstId, styles: {}, spin: false}
+  ]);
+  setTimeout(() => {
+    setWordElements(prevWordElements => prevWordElements.filter(e => e.id !== firstId))
+  }, 5000); 
+
+  const setSpin = (element, spin) => {
+    const otherElements = wordElements.filter(e => e.id !== element.id);
+    setWordElements([
+      ...otherElements,
+      {...element, spin}
+    ]);
+  }  
+
+  const newWord = (event) => {
+      const x = event.clientX - 100;
+      const y = event.clientY - 100;
+
+      // Append word
+      const wordsId = (Date.now()).toString(16);
+      const newWordElement = getWordElement(wordsId, x, y);
+      setWordElements(prevWordElements => [...prevWordElements, newWordElement]);
+      
+      // Remove word after a random time
+      const oldRandomTimeout = getRandomInteger(2000, 10000);
+      setTimeout(() => {
+        setWordElements(prevWordElements => prevWordElements.filter(e => e.id !== wordsId))
+      }, oldRandomTimeout); 
+  }
 
   return (
-    <RoomSoundAndTouchStyles>
-      <div className="header">મ્યાંt iл a cમ્oice</div>
-
-      {choiceConfirmed && <div>Thanks!</div>}
-
-      {!choiceConfirmed && (
-        <div className="panel">
-          {newVideos.map((video, index) => {
-            return (
-              <SoundAndTouchVideo
-                key={`video-${index}`}
-                video={video}
-                isCurrent={index === selectedVideoIndex}
-                index={index}
-                setSelectedVideoIndex={setSelectedVideoIndex}
-              />
-            );
-          })}
-        </div>
+    <RoomSoundAndTouchStyles onClick={newWord}>
+      {wordElements.map(
+        (e) => 
+          <span 
+            key={`word-${e.id}`} 
+            className={`wordWrapper ${e.spin ? 'spin' : ''}`} 
+            style={e.styles.wrapperStyle}
+            onClick={() => setSpin(e, true)}
+          >
+            <span className="word" style={e.styles.wordStyle}>{e.contents}</span>
+          </span>
       )}
-
-      <button type="button" className="button" onClick={() => setChoiceConfirmed(true)}>
-        CલીOICE
-      </button>
     </RoomSoundAndTouchStyles>
   );
 }

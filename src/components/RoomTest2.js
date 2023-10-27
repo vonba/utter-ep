@@ -110,6 +110,7 @@ export default function RoomTest2() {
   // Default worm
   const [hasCollided, setHasCollided] = useState(false);
   const [collisions, setCollisions] = useState(0);
+  // eslint-disable-next-line no-unused-vars
   const [worm, setWorm] = useState({
     x: (window.innerWidth || document.documentElement.clientWidth) / 2,
     y: (window.innerHeight || document.documentElement.clientHeight) / 2,
@@ -121,7 +122,7 @@ export default function RoomTest2() {
 
   // Drawing stuff
   const [drawing, setDrawing] = useState(false);
-  const [userLineColor, setUserLineColor] = useState(lineColor);
+  const [userLineColor] = useState(lineColor);
   const [drawingCounter, setDrawingCounter] = useState(0);
 
   // Set up canvases
@@ -152,6 +153,7 @@ export default function RoomTest2() {
 
     // Clean up the interval when the component unmounts
     return () => clearInterval(intervalId);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [context, contextWorm]);
 
   // React to collision
@@ -177,6 +179,7 @@ export default function RoomTest2() {
       }));
       setHasCollided(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasCollided, contextWorm]);
 
   // Move the worm
@@ -277,14 +280,14 @@ export default function RoomTest2() {
 
   // React to counter 0
   useEffect(() => {
+    if (!context || !contextWorm) return;
     if (drawingCounter === 0) {
       const canvasWidth = canvasRef.current.width;
       const canvasHeight = canvasRef.current.height;
-      if (!context) return;
       context.clearRect(0, 0, canvasWidth, canvasHeight);
       contextWorm.clearRect(0, 0, canvasWidth, canvasHeight);
     }
-  }, [drawingCounter])
+  }, [drawingCounter, context, contextWorm])
 
   const resetCounters = () => {
     if (drawingCounter === 0) {
