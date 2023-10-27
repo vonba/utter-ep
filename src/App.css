@@ -1,3 +1,15 @@
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/HelveticaNeue-Thin.woff") format(woff);
+  weight: 200
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/HelveticaNeue-Roman.woff") format(woff);
+  weight: 400;
+}
+
+
 * {
   box-sizing: border-box;
 }

@@ -49,7 +49,7 @@ const RoomTest2Styles = styled.div`
 
     @media (max-width: 800px) {
       top: unset;
-      bottom: 0;
+      bottom: 4rem;
     }
   }
 
@@ -259,6 +259,22 @@ export default function RoomTest2() {
     setDrawingCounter(Math.max(drawingCounter - 1, 0));
   };
 
+  const handleTouchStart = (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    handleMouseDown({ nativeEvent: { offsetX: touch.clientX, offsetY: touch.clientY } });
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    handleMouseMove({ nativeEvent: { offsetX: touch.clientX, offsetY: touch.clientY } });
+  };
+
+  const handleTouchEnd = () => {
+    handleMouseUp();
+  };
+
   // React to counter 0
   useEffect(() => {
     if (drawingCounter === 0) {
@@ -292,6 +308,9 @@ export default function RoomTest2() {
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       />
       <div className="counter drawingCounter">
         {drawingCounter}

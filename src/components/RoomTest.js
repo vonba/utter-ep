@@ -31,12 +31,9 @@ const RoomTestStyles = styled.div`
     }
   }
 
+  // Specific dimensions and position are handled by state
   .bubble {
     position: absolute;
-    width: 20rem;
-    height: 20rem;
-    top: calc(50% - 10rem - 5rem);
-    left: calc(50% - 10rem - 5rem);
     opacity: 0.5;
     border-radius: 50%;
     transition: all 1s;
@@ -63,8 +60,8 @@ export default function RoomTest({setVideoStyles, setVideoBgStyles}) {
   const [flashing, setFlashing] = useState(false);
   const [bubbles, setBubbles] = useState([
     {id: Date.now(), style: { 
-      backgroundColor: 'red', width: '15rem', height: '15rem', 
-      top: 'calc(50% - 7rem - 5rem)', left: 'calc(50% - 7rem)',
+      backgroundColor: 'red', width: '12rem', height: '12rem', 
+      top: 'calc(50% - 6rem - 5rem)', left: 'calc(50% - 6rem)',
     }}
   ]);
 
@@ -92,7 +89,7 @@ export default function RoomTest({setVideoStyles, setVideoBgStyles}) {
     setVideoBgStyles({backgroundColor: colorsBg[newIndexBg]});
     const newIndexMode = getRandomInteger(0, modes.length - 1);
     setVideoStyles({mixBlendMode: modes[newIndexMode]});
-    const newSize = getRandomInteger(7, 70);
+    const newSize = getRandomInteger(6, 55);
     const size = (`${newSize}vh`);
     const newTop = getRandomInteger(1, 99);
     const top = `calc(${newTop}vh - ${newSize}vh / 2)`;
