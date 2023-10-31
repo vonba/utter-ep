@@ -52,7 +52,7 @@ const RoomSoundAndTouchStyles = styled.div`
     perspective: 500px;
     display: block;
     animation: grow 0.5s infinite;
-    top: 40%;
+    top: 30%;
     left: 40%;
 
     &.spin {

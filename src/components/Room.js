@@ -7,6 +7,7 @@ import rooms from "../lib/rooms";
 import RoomTest from "./RoomTest";
 import { useState } from "react";
 import RoomTest2 from "./RoomTest2";
+import RoomKiller from "./RoomKiller";
 
 const RoomStyles = styled.div`
   position: fixed;
@@ -76,7 +77,7 @@ export default function Room({ roomName, paused, setEnded }) {
       )}
       {roomName === "the-killer-is-on-the-phone" && (
         <div className="roomWrapper">
-          <RoomItShines className="room" />
+          <RoomKiller className="room" />
         </div>
       )}
     </RoomStyles>

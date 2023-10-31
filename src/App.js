@@ -10,12 +10,12 @@ import Credits from "./components/Credits";
 function App() {
   const firstIndex = getRandomInteger(0, Object.keys(rooms).length - 1);
   let firstRoom = Object.keys(rooms)[firstIndex];
-  firstRoom = 'sound-and-touch';
+  firstRoom = 'the-killer-is-on-the-phone';
 
   const [roomName, setRoomName] = useState();
   const [paused, setPaused] = useState(false);
   const [ended, setEnded] = useState(false);
-  const [creditsVisible, setCreditsVisible] = useState(true);
+  const [creditsVisible, setCreditsVisible] = useState(false);
   // Keep track of what rooms left to show (since order is random)
   const [roomsLeft, setRoomsLeft] = useState(
     Object.keys(rooms).filter(r => r !== firstRoom) // Avoid repeating initial room
@@ -38,7 +38,7 @@ function App() {
           />
           <Room setEnded={setEnded} roomName={roomName} setRoomName={setRoomName} paused={paused} />
         </>}
-        {!roomName && <PlayFirst setRoomName={setRoomName} firstRoom={firstRoom} />}
+        {!roomName && <PlayFirst setRoomName={setRoomName} firstRoom={firstRoom} setCreditsVisible={setCreditsVisible} />}
         {creditsVisible && <Credits setCreditsVisible={setCreditsVisible} />}
     </div>
   );

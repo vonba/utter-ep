@@ -8,6 +8,17 @@ const VideoBackgroundStyles = styled.div`
   width: 100vw;
   height: 100vh;
   background-color: black;
+  overflow: hidden;
+
+  .progress-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background-color: red;
+    width: 0; /* Initial width */
+    z-index: 99;
+  }
 
   video {
     object-fit: cover;
@@ -23,6 +34,7 @@ export default function VideoBackground({
 }) {
   const videoRef = useRef(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [progressWidth, setProgressWidth] = useState(0);
 
   useEffect(() => {
     const videoElement = videoRef.current;
@@ -51,19 +63,37 @@ export default function VideoBackground({
       handleVideoEnd();
     };
 
+    const handleTimeUpdate = () => {
+      const currentTime = videoElement.currentTime;
+      const duration = videoElement.duration;
+      const progressPercentage = (currentTime / duration) * 100;
+      setProgressWidth(`${progressPercentage}%`);
+    };
+
     videoElement.addEventListener('loadeddata', handleLoadedData);
     videoElement.addEventListener('ended', handleVideoEnded);
+    videoElement.addEventListener('timeupdate', handleTimeUpdate);
 
     // Clean up event listeners when the component unmounts
     return () => {
       videoElement.removeEventListener('loadeddata', handleLoadedData);
       videoElement.removeEventListener('ended', handleVideoEnded);
+      videoElement.removeEventListener('timeupdate', handleTimeUpdate);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoRef]);
 
-  return <VideoBackgroundStyles style={videoBgStyles}>
-    <video style={videoStyles} ref={videoRef} autoPlay={true} src={`${process.env.PUBLIC_URL}/video/${videoName}`} poster={`${process.env.PUBLIC_URL}/24-cover-bw.png`} />
-    {/* <video autoPlay={true} src={`${process.env.PUBLIC_URL}/video/${videoName}`} /> */}
-  </VideoBackgroundStyles>
+  return (
+    <VideoBackgroundStyles style={videoBgStyles}>
+      <div className="progress-indicator" style={{ width: progressWidth }} />
+      <video 
+        style={videoStyles} 
+        playsInline={true} 
+        ref={videoRef} 
+        autoPlay={true} 
+        src={`${process.env.PUBLIC_URL}/video/${videoName}`} 
+        poster={`${process.env.PUBLIC_URL}/24-cover-bw.png`} 
+      />
+    </VideoBackgroundStyles>
+  );
 }

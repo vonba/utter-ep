@@ -33,7 +33,7 @@ const RoomTest2Styles = styled.div`
   .drawingCounter {
     top: 0;
     left: 0;
-    background: white url("/poison.svg") left no-repeat;
+    background: transparent url("/poison-white.svg") left no-repeat;
 
     @media (max-width: 800px) {
       top: unset;
@@ -44,7 +44,7 @@ const RoomTest2Styles = styled.div`
     margin: 0;
     top: 4rem;
     left: 0;
-    background: rgba(154, 66, 66, 0.9) url("/bug-bw.svg") 0.25em no-repeat;
+    background: transparent url("/bug-bw.svg") 0.25em no-repeat;
     border: none;
 
     @media (max-width: 800px) {
@@ -59,7 +59,9 @@ const RoomTest2Styles = styled.div`
     background-size: 3em;
     text-align: right;
     padding: 1rem;
-    color: black;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 0 2px black;
     line-height: 2.2rem;
     width: 6rem;
   }
@@ -76,6 +78,7 @@ const RoomTest2Styles = styled.div`
       font-size: 2rem;
       padding: 2em;
       background-position: 2em center;
+      background-color: rgba(154, 66, 66, 0.9);
     }
   }
 `;
@@ -124,6 +127,8 @@ export default function RoomTest2() {
   const [drawing, setDrawing] = useState(false);
   const [userLineColor] = useState(lineColor);
   const [drawingCounter, setDrawingCounter] = useState(0);
+  var texture = new Image();
+  texture.src = "/24-cover.jpg";
 
   // Set up canvases
   useEffect(() => {
@@ -230,7 +235,7 @@ export default function RoomTest2() {
       const ctx = canvasRef.current.getContext("2d");
       const imageData = ctx.getImageData(xInt, yInt, 1, 1).data;
       
-      const isHit = imageData[0] !== 0; // Non-black colour detected
+      const isHit = imageData[3] !== 0; // Non-transparent pixel detected
       // const isHit = imageData[0] === 255 && imageData[1] === 192 && imageData[2] === 203; // Pink color
       if (isHit) {
         setHasCollided(true);
@@ -245,9 +250,12 @@ export default function RoomTest2() {
     if (!context || drawingCounter === 0) return; // Ensure context is available
     setDrawing(true);
     const { offsetX, offsetY } = e.nativeEvent;
+    const pattern = context.createPattern(texture, "repeat");
+    context.strokeStyle = pattern;
+    context.globalCompositeOperation = "overlay";
+    // context.strokeStyle = userLineColor;
     context.beginPath();
     context.moveTo(offsetX, offsetY);
-    context.strokeStyle = userLineColor;
   };
 
   // Draw

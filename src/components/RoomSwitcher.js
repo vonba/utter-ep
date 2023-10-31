@@ -82,7 +82,7 @@ const RoomSwitcherStyles = styled.div`
   }
 
   &.open {
-    height: 250px;
+    height: 350px;
   }
 `;
 
@@ -114,17 +114,18 @@ export default function RoomSwitcher({
   // Switch to a new random room
   const handleRoomSwitch = () => {
     if (!isOpen) {
+      // No rooms left? Show credits
+      if (!roomsLeft.length) {
+        setCreditsVisible(true);
+        return;
+      }
+      
       setIsOpen(true);
       setIsMoving(true);
 
       // Pick a random room
       let newIndex = getRandomInteger(0, Object.keys(rooms).length - 1);
       
-      // No rooms left? Show credits
-      if (!roomsLeft.length) {
-        setCreditsVisible(true);
-      }
-
       // Only one room left? Then just pick that
       if (roomsLeft.length === 1) {
         newIndex = Object.keys(rooms).indexOf(roomsLeft[0]);

@@ -79,10 +79,10 @@ const CreditsStyles = styled.div`
 export default function Credits({setCreditsVisible}) {
   return <CreditsStyles>
     <div className="creditsWrapper">
-      <header>
+      {/* <header>
         <h2>24-Hour Fur Coat Store</h2>
         <h3>by UTTER</h3>
-      </header>
+      </header> */}
       <p>
         This music was produced independently and is not on Spotify or any other major platform
       </p>
@@ -94,6 +94,7 @@ export default function Credits({setCreditsVisible}) {
       </p>
       <p>
         Music by Tom Kearney and Simon Balthazar<br />
+        All recordings are live and improvised<br />
         Videos by Miguel Jara<br />
         Coding by Simon Balthazar
       </p>
@@ -101,7 +102,7 @@ export default function Credits({setCreditsVisible}) {
         Bookings/press <a href="mailto:hola@utter.band">hola@utter.band</a>
       </p>
       <p>
-        <button type="button" onClick={() => setCreditsVisible(false)}>yes</button>
+        <button type="button" onClick={() => setCreditsVisible(false)}>good to know</button>
       </p>
     </div>
   </CreditsStyles>
