@@ -1,5 +1,4 @@
-# 24-Hour Fur Coat Store
-# by Utter
+# 24-Hour Fur Coat Store by Utter
 
 This React application is the interactive online version of the Utter album 24-Hour Fur Coat Store.
 
