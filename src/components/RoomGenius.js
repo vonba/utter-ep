@@ -8,7 +8,7 @@ const wormColor = 'rgba(154, 66, 66, 0.9)';
 const lineColor = "rgba(87, 99, 101, 0.1)";
 const wormSize = 20;
 
-const RoomTest2Styles = styled.div`
+const RoomGeniusStyles = styled.div`
   @keyframes pulsate {
     0% {
       transform: scale(1);
@@ -104,7 +104,7 @@ const getNewWormCoordinates = (canvasWidth, canvasHeight) => {
   return {x, y};
 }
 
-export default function RoomTest2() {
+export default function RoomGenius() {
   const canvasRef = useRef(null);
   const canvasRefWorm = useRef(null);
   const [context, setContext] = useState(null);
@@ -310,7 +310,7 @@ export default function RoomTest2() {
   };
 
   return (
-    <RoomTest2Styles className={drawingCounter === 0 ? 'outOfPoison' : ''}>
+    <RoomGeniusStyles className={drawingCounter === 0 ? 'outOfPoison' : ''}>
       <Canvas
         ref={canvasRefWorm}
       />
@@ -329,6 +329,6 @@ export default function RoomTest2() {
       <button className="counter collisions" onClick={resetCounters}>
         {collisions}
       </button>
-    </RoomTest2Styles>
+    </RoomGeniusStyles>
   );
 }

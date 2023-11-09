@@ -8,9 +8,9 @@ const RoomWheelStyles = styled.div`
 
   .wrapper {
     display: inline-block;
-    width: 250px;
+    width: 320px;
     height: 250px;
-    left: calc(50% - 125px);
+    left: calc(50% - 160px);
     top: 1rem;
   }
 

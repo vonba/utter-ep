@@ -1,8 +1,14 @@
 import styled from "styled-components";
 import getRandomInteger from "../lib/getRandomInteger";
 import { useState } from "react";
+import { LyricsContainer, checkTimeCodes, useEvents } from "../lib/useEvents";
+import { useEffect } from "react";
 
 const colors = ['bisque', 'mediumorchid', 'chocolate', 'transparent'];
+
+// const colorsBg = ['cadetblue', 'yellow', 'darkorchid', 'darksalmon', 'moccasin', 'goldenrod'];
+// const modes = ['difference', 'multiply', 'normal', 'overlay', ];
+
 
 const RoomSoundAndTouchStyles = styled.div`
   position: absolute;
@@ -77,6 +83,27 @@ const lines = [
   'From his surroundings',
 ];
 
+const lyrics = [
+  // Lyric events
+  {start: {m: 0, s: 2}, durationMs: 2000,  text: 'His sex life is conducted', class: ''},
+  {start: {m: 0, s: 5}, durationMs: 2000,  text: 'By sound and touch', class: ''},
+  {start: {m: 0, s: 9}, durationMs: 2000,  text: 'His vocabulary is restricted', class: ''},
+  {start: {m: 0, s: 11}, durationMs: 2000,  text: 'To types of things', class: ''},
+  {start: {m: 0, s: 14}, durationMs: 2000,  text: 'That he sees in the sky.', class: ''},
+  {start: {m: 0, s: 37}, durationMs: 2000,  text: 'He will starve to death', class: ''},
+  {start: {m: 0, s: 41}, durationMs: 2000,  text: 'Surrounded by food', class: ''},
+  {start: {m: 0, s: 46}, durationMs: 2000,  text: 'If it is not moving', class: ''},
+  {start: {m: 0, s: 52}, durationMs: 2000,  text: 'There is a mutual antagonism', class: ''},
+  {start: {m: 0, s: 56}, durationMs: 1000,  text: 'Between center and periphery', class: ''},
+  {start: {m: 2, s: 46}, durationMs: 3000,  text: 'We are still faced with the question', class: ''},
+  {start: {m: 2, s: 49}, durationMs: 2000,  text: 'Of how the animal abstracts', class: ''},
+  {start: {m: 2, s: 53}, durationMs: 2000,  text: 'What is useful to him', class: ''},
+  {start: {m: 2, s: 56}, durationMs: 2000,  text: 'From his surroundings', class: ''},
+  // Video events
+  {start: {m: 3, s: 34}, durationMs: 32000,  text: '•', class: 'shake', videoStyles: {mixBlendMode: 'multiply'}, videoBgStyles: {backgroundColor: 'goldenrod'}},
+  {start: {m: 4, s: 32}, durationMs: 32000,  text: '', class: '', videoStyles: {mixBlendMode: 'difference', animation: 'flash 1s infinite'}, videoBgStyles: {backgroundColor: 'red'}},
+]
+
 const getRandomStyles = (x = null, y = null) => {
   const orientation = getRandomInteger(0, 3);
   let transform = 'rotate(0)';
@@ -108,15 +135,21 @@ const getWordElement = (id, x = null, y = null) => {
   return {contents: lines[getRandomInteger(0, lines.length - 1)], id, styles: getRandomStyles(x, y), spin: false};
 }
 
-export default function RoomSoundAndTouch() {
+export default function RoomSoundAndTouch({roomVideoPosition, setVideoStyles, setVideoBgStyles}) {
+
   // Set a first word and remove it
   const firstId = (Date.now()).toString(16);
   const [wordElements, setWordElements] = useState([
     {contents: 'Touch me', id: firstId, styles: {}, spin: false}
   ]);
-  setTimeout(() => {
-    setWordElements(prevWordElements => prevWordElements.filter(e => e.id !== firstId))
-  }, 5000); 
+  useEffect(() => {
+    const t = setInterval(() => {
+      setWordElements(prevWordElements => prevWordElements.filter(e => e.id !== firstId))
+    }, 5000); 
+    return () => {
+      clearInterval(t);
+    }
+  }, []);
 
   const setSpin = (element, spin) => {
     const otherElements = wordElements.filter(e => e.id !== element.id);
@@ -155,6 +188,13 @@ export default function RoomSoundAndTouch() {
             <span className="word" style={e.styles.wordStyle}>{e.contents}</span>
           </span>
       )}
+
+      <LyricsContainer 
+        lines={lyrics}
+        roomVideoPosition={roomVideoPosition}
+        style={{bottom: 'unset', top: 0}} 
+        
+      />
     </RoomSoundAndTouchStyles>
   );
 }

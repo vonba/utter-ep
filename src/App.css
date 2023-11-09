@@ -1,8 +1,8 @@
-@font-face {
+/* @font-face {
   font-family: HelveticaNeue;
   src: url("../public/fonts/HelveticaNeue-Thin.woff") format(woff);
-  /* weight: 200 */
-}
+  weight: 200
+} */
 /* @font-face {
   font-family: HelveticaNeue;
   src: url("../public/fonts/HelveticaNeue-Roman.woff") format(woff);
@@ -17,16 +17,19 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: HelveticaNeue, 'Helvetica', sans-serif;
+  font-family: "Arial";
+  /* font-family: HelveticaNeue, 'Helvetica', sans-serif; */
   font-weight: 200;
   background-color: black;
   color: white;
   line-height: 1.25;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 button {
-  font-family: HelveticaNeue, 'Helvetica', sans-serif;
+  font-family: "Arial";
+  /* font-family: HelveticaNeue, 'Helvetica', sans-serif; */
   font-weight: 400;
   letter-spacing: 1px;
 }

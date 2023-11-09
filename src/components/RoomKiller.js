@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import { useState } from "react";
 import styled from "styled-components";
+import { LyricsContainer, checkTimeCodes, useEvents } from "../lib/useEvents";
 
 const lines = [
   {start: {m: 0, s: 13}, durationMs: 1000,  text: 'Attack yourself', class: ''},
@@ -26,7 +27,6 @@ const lines = [
   {start: {m: 1, s: 57}, durationMs: 800,  text: 'The killer is on the phone', class: 'shake'},
   {start: {m: 1, s: 59}, durationMs: 1200,  text: 'The killer is on the phone', class: 'huge'},
 ]
-
 
 const RoomTestStyles = styled.div`
   position: absolute;
@@ -93,159 +93,80 @@ const CanvasContainer = styled.div`
   }
 `;
 
-const LyricsContainer = styled.div`
-  @keyframes scroll {
-    0% {
-      transform: translateY(100%);
-    }
-    50% {
-      transform: translateY(-50%);
-    }
-    100% {
-      transform: translateY(100%);
-    }
-  }
-  @keyframes shake {
-    0% {
-      transform: translate(0, 0);
-    }
-    25% {
-      transform: translate(-100px, -100px);
-    }
-    50% {
-      transform: translate(150px, 150px);
-    }
-    75% {
-      transform: translate(-120px, 10px);
-    }
-    100% {
-      transform: translate(200px, -200px);
-    }
-  }
-
-  position: absolute;
-  bottom: -20vh;
-  left: 0%;
-  width: 100%;
-  /* z-index: 99; */
-  text-align: center;
-
-  .lyric {
-    display: inline-block;
-    font-size: 3rem;
-    color: white;
-    text-transform: uppercase;
-    text-align: left;
-
-    &.huge {
-      font-size: 10rem;
-      animation: scroll 2s infinite;
-      transform: translateY(-50%);
-    }
-
-    &.shake {
-      font-style: italic;
-      animation: shake 0.5s infinite
-    }
-  }
-`;
-
-const RoomKiller = () => {
-  const [currentLine, setCurrentLine] = useState(null);
+const RoomKiller = ({roomVideoPosition}) => {
   const [cameraReady, setCameraReady] = useState(false);
   const canvasRef1 = useRef();
   const canvasRef2 = useRef();
 
   // Camera stuff
   useEffect(() => {
-    const startCamera = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        const video = document.createElement("video");
-        setCameraReady(true);
-
-        video.srcObject = stream;
-        video.play();
-
-        const canvas1 = canvasRef1.current;
-        const ctx1 = canvas1.getContext("2d");
-
-        const canvas2 = canvasRef2.current;
-        const ctx2 = canvas2.getContext("2d");
-
-        let lastFrame;
-
-        const renderFrame = () => {
-          // Get the video image data
-          ctx1.drawImage(video, 0, 0, canvas1.width, canvas1.height);
-
-          // Apply the effect to the first canvas
-          applyEffect(ctx1, canvas1.width, canvas1.height);
-
-          // Flip the second canvas horizontally
-          ctx2.save();
-          ctx2.scale(-1, 1);
-          ctx2.drawImage(video, -canvas2.width, 0, canvas2.width, canvas2.height);
-          ctx2.restore();
-
-          // Apply the effect to the second canvas
-          applyEffect(ctx2, canvas2.width, canvas2.height);
-
-          // Store the current frame for the next iteration
-          lastFrame = requestAnimationFrame(renderFrame);
-        };
-
-        const applyEffect = (ctx, width, height) => {
-          const imageData = ctx.getImageData(0, 0, width, height);
-          const data = imageData.data;
-
-          for (let i = 0; i < data.length; i += 4) {
-            data[i] = 255 - data[i]; // Red
-            data[i + 1] = 255 - data[i + 1]; // Green
-            data[i + 2] = 255 - data[i + 2]; // Blue
-          }
-
-          ctx.putImageData(imageData, 0, 0);
-        };
-
-        const checkTimeCodes = () => {
-          const currentTime = video.currentTime;
-      
-          let noMatch = true;
-          lines.every(line => {
-            const startTime = line.start.m * 60 + line.start.s;
-            const endTime = startTime + line.durationMs / 1000;
-      
-            if (currentTime >= startTime && currentTime <= endTime) {
-              console.log(line);
-              setCurrentLine(line);
-              noMatch = false;
-              return false;
-            }
-            return true;
-          });
-          if (noMatch) { setCurrentLine(null) }
-          setTimeout(() => checkTimeCodes(), 500)
-        };
-        checkTimeCodes();
-
-        video.addEventListener("loadedmetadata", () => {
-          canvas1.width = canvas2.width = video.videoWidth / 2;
-          canvas1.height = canvas2.height = video.videoHeight / 2;
-          lastFrame = requestAnimationFrame(renderFrame);
-        });
-
-        return () => {
-          video.srcObject.getTracks().forEach((track) => track.stop());
-          cancelAnimationFrame(lastFrame);
-        };
-      } catch (error) {
-        console.error("Error accessing camera:", error);
-      }
-    };
-
     startCamera();
-  }, []);
+  });
+
+  const startCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const video = document.createElement("video");
+      setCameraReady(true);
+
+      video.srcObject = stream;
+      video.play();
+
+      const canvas1 = canvasRef1.current;
+      const ctx1 = canvas1.getContext("2d");
+
+      const canvas2 = canvasRef2.current;
+      const ctx2 = canvas2.getContext("2d");
+
+      let lastFrame;
+
+      const renderFrame = () => {
+        // Get the video image data
+        ctx1.drawImage(video, 0, 0, canvas1.width, canvas1.height);
+
+        // Apply the effect to the first canvas
+        applyEffect(ctx1, canvas1.width, canvas1.height);
+
+        // Flip the second canvas horizontally
+        ctx2.save();
+        ctx2.scale(-1, 1);
+        ctx2.drawImage(video, -canvas2.width, 0, canvas2.width, canvas2.height);
+        ctx2.restore();
+
+        // Apply the effect to the second canvas
+        applyEffect(ctx2, canvas2.width, canvas2.height);
+
+        // Store the current frame for the next iteration
+        lastFrame = requestAnimationFrame(renderFrame);
+      };
+
+      const applyEffect = (ctx, width, height) => {
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const data = imageData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+          data[i] = 255 - data[i]; // Red
+          data[i + 1] = 255 - data[i + 1]; // Green
+          data[i + 2] = 255 - data[i + 2]; // Blue
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+      };
+
+      video.addEventListener("loadedmetadata", () => {
+        canvas1.width = canvas2.width = video.videoWidth / 2;
+        canvas1.height = canvas2.height = video.videoHeight / 2;
+        lastFrame = requestAnimationFrame(renderFrame);
+      });
+
+      return () => {
+        video.srcObject.getTracks().forEach((track) => track.stop());
+        cancelAnimationFrame(lastFrame);
+      };
+    } catch (error) {
+      console.error("Error accessing camera:", error);
+    }
+  };
 
   return (
     <RoomTestStyles>
@@ -257,11 +178,10 @@ const RoomKiller = () => {
           <canvas ref={canvasRef2} />
         </CanvasContainer>
       </>}
-      <LyricsContainer>
-        {currentLine && <div className={`lyric ${currentLine.class}`}>
-          {currentLine.text}
-        </div>}
-      </LyricsContainer>
+      <LyricsContainer 
+        lines={lines}
+        roomVideoPosition={roomVideoPosition}
+      />
     </RoomTestStyles>
   );
 };

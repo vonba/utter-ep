@@ -2,6 +2,18 @@ import styled from "styled-components";
 import { useEffect, useRef, useState } from "react";
 
 const VideoBackgroundStyles = styled.div`
+  @keyframes flash {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.2;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
   position: fixed;
   left: 0;
   top: 0;
@@ -30,7 +42,7 @@ const VideoBackgroundStyles = styled.div`
 `;
 
 export default function VideoBackground({
-  videoName, paused, handleVideoEnd, videoStyles, videoBgStyles, setVideoStyles, setVideoBgStyles,
+  videoName, paused, handleVideoEnd, videoStyles, videoBgStyles, setVideoStyles, setVideoBgStyles, setRoomVideoPosition,
 }) {
   const videoRef = useRef(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
@@ -68,6 +80,7 @@ export default function VideoBackground({
       const duration = videoElement.duration;
       const progressPercentage = (currentTime / duration) * 100;
       setProgressWidth(`${progressPercentage}%`);
+      setRoomVideoPosition(currentTime);
     };
 
     videoElement.addEventListener('loadeddata', handleLoadedData);

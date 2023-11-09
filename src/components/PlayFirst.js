@@ -42,6 +42,7 @@ const PlayFirstStyles = styled.div`
     animation: rotate-in 6s, fade-in 4s;
     position: relative;
     z-index: 1;
+    text-align: justify;
   }
 
   .logo {

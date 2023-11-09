@@ -4,10 +4,12 @@ import RoomDesire from "./RoomDesire";
 import RoomItShines from "./RoomItShines";
 import RoomSoundAndTouch from "./RoomSoundAndTouch";
 import rooms from "../lib/rooms";
-import RoomTest from "./RoomTest";
+import RoomTest from "./RoomMother";
 import { useState } from "react";
-import RoomTest2 from "./RoomTest2";
+import RoomTest2 from "./RoomGenius";
 import RoomKiller from "./RoomKiller";
+import RoomMother from "./RoomMother";
+import RoomGenius from "./RoomGenius";
 
 const RoomStyles = styled.div`
   position: fixed;
@@ -32,15 +34,15 @@ const RoomStyles = styled.div`
   }
 `;
 
-export default function Room({ roomName, paused, setEnded }) {
+export default function Room({ roomName, paused, setEnded, roomVideoPosition, setRoomVideoPosition }) {
   const videoName = rooms[roomName].videoFile;
   const [videoStyles, setVideoStyles] = useState();
   const [videoBgStyles, setVideoBgStyles] = useState();
 
   const handleVideoEnded = () => {
     setEnded(true);
-    setVideoStyles({});
-    setVideoBgStyles({});
+    setVideoStyles(null);
+    setVideoBgStyles(null);
   }
 
   return (
@@ -53,31 +55,32 @@ export default function Room({ roomName, paused, setEnded }) {
         paused={paused} 
         videoName={videoName} 
         handleVideoEnd={handleVideoEnded}
+        setRoomVideoPosition={setRoomVideoPosition}
       />
       {roomName === "sound-and-touch" && (
         <div className="roomWrapper">
-          <RoomSoundAndTouch className="room" />
+          <RoomSoundAndTouch className="room" roomVideoPosition={roomVideoPosition} setVideoStyles={setVideoStyles} setVideoBgStyles={setVideoBgStyles} />
         </div>
       )}
       {roomName === "it-shines" && (
         <div className="roomWrapper">
-          <RoomItShines className="room" />
+          <RoomItShines className="room" roomVideoPosition={roomVideoPosition}  setVideoStyles={setVideoStyles} setVideoBgStyles={setVideoBgStyles}  />
         </div>
       )}
       {roomName === "flash-of-genius" && (
-        <RoomTest2 className="room" />
+        <RoomGenius className="room" roomVideoPosition={roomVideoPosition} />
       )}
       {roomName === "cloth-mother-vs-metal-mother" && (
         <div className="roomWrapper">
-          <RoomTest className="room" setVideoStyles={setVideoStyles} setVideoBgStyles={setVideoBgStyles} />
+          <RoomMother className="room" setVideoStyles={setVideoStyles} setVideoBgStyles={setVideoBgStyles} roomVideoPosition={roomVideoPosition} />
         </div>
       )}
       {roomName === "car-massacre-picnic" && (
-        <RoomDesire className="room" />
+        <RoomDesire className="room" roomVideoPosition={roomVideoPosition} />
       )}
       {roomName === "the-killer-is-on-the-phone" && (
         <div className="roomWrapper">
-          <RoomKiller className="room" />
+          <RoomKiller className="room" roomVideoPosition={roomVideoPosition} />
         </div>
       )}
     </RoomStyles>

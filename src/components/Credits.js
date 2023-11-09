@@ -20,7 +20,6 @@ const CreditsStyles = styled.div`
 
   position: fixed;
   z-index: 99;
-  /* background-color: rgba(0, 0, 0, 0.6); */
   background-color: black;
   width: 100%;
   height: 100vh;
@@ -30,7 +29,6 @@ const CreditsStyles = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* animation: fade-in 1s; */
 
   header {
     margin-bottom: 2em;
@@ -59,7 +57,7 @@ const CreditsStyles = styled.div`
     overflow-y: auto;
     
     p {
-      max-width: 26em;
+      max-width: 29em;
       margin-left: auto;
       margin-right: auto;
     }
@@ -76,7 +74,7 @@ const CreditsStyles = styled.div`
   }
 `;
 
-export default function Credits({setCreditsVisible}) {
+export default function Credits({setCreditsVisible, doRestart}) {
   return <CreditsStyles>
     <div className="creditsWrapper">
       {/* <header>
@@ -104,6 +102,9 @@ export default function Credits({setCreditsVisible}) {
       <p>
         <button type="button" onClick={() => setCreditsVisible(false)}>good to know</button>
       </p>
+      {doRestart && <p>
+        <button type="button" onClick={doRestart}>restart</button>
+      </p>}
     </div>
   </CreditsStyles>
 }

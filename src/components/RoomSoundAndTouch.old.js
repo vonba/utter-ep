@@ -125,10 +125,6 @@ export default function RoomSoundAndTouch() {
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(); /* Added state to track selected video */
   const [choiceConfirmed, setChoiceConfirmed] = useState(false);
 
-  // useEffect(() => {
-  //   console.log('happens once')
-  // }, [])
-
   const handleSelection = () => {
     const selectedVideo = newVideos[selectedVideoIndex];
 

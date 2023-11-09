@@ -6,7 +6,7 @@ const colors = ['lightcoral', 'green', 'burlywood', 'thistle', 'aquamarine', 'ga
 const colorsBg = ['cadetblue', 'yellow', 'darkorchid', 'darksalmon', 'moccasin', 'goldenrod'];
 const modes = ['difference', 'multiply', 'normal', 'overlay', ];
 
-const RoomTestStyles = styled.div`
+const RoomMotherStyles = styled.div`
   @keyframes pulse {
     0% {
       transform: scale(1);
@@ -56,7 +56,7 @@ const RoomTestStyles = styled.div`
   }
 `;
 
-export default function RoomTest({setVideoStyles, setVideoBgStyles}) {
+export default function RoomMother({setVideoStyles, setVideoBgStyles}) {
   const [flashing, setFlashing] = useState(false);
   const [bubbles, setBubbles] = useState([
     {id: Date.now(), style: { 
@@ -99,7 +99,7 @@ export default function RoomTest({setVideoStyles, setVideoBgStyles}) {
   }
 
 
-  return <RoomTestStyles>
+  return <RoomMotherStyles>
     {flashing && <div className="flash"></div>}
     <div className="bubbles">
       {bubbles.map((bubble) => <div 
@@ -109,5 +109,5 @@ export default function RoomTest({setVideoStyles, setVideoBgStyles}) {
         onClick={handleClick}
       ></div>)}
     </div>
-  </RoomTestStyles>
+  </RoomMotherStyles>
 }
