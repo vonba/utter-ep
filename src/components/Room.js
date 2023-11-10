@@ -63,9 +63,7 @@ export default function Room({ roomName, paused, setEnded, roomVideoPosition, se
         </div>
       )}
       {roomName === "it-shines" && (
-        <div className="roomWrapper">
           <RoomItShines className="room" roomVideoPosition={roomVideoPosition}  setVideoStyles={setVideoStyles} setVideoBgStyles={setVideoBgStyles}  />
-        </div>
       )}
       {roomName === "flash-of-genius" && (
         <RoomGenius className="room" roomVideoPosition={roomVideoPosition} />

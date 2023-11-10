@@ -178,33 +178,88 @@ export default function RoomItShines({roomVideoPosition, setVideoStyles, setVide
   }, []);
 
   const handleMouseOverDot = (id) => {
-    // Find the element in dots with this id
-    const updatedDots = dots.map((dot) => {
-      if (dot.id === id) {
-        // Set its attribute class to 'bumped'
-        return { ...dot, class: 'bumped' };
-      }
-      return dot;
-    });
-  
-    // Replace the previous elements with the new ones, using setDots()
-    setDots(updatedDots);
-    handleFlash();
+    setDots(oldDots => {
+      // Find the element in dots with this id
+      return oldDots.map((dot) => {
+        if (`${dot.id}` === `${id}`) {
+          // Set its attribute class to 'bumped'
+          return { ...dot, class: 'bumped' };
+        }
+        return dot;
+      });
+    })
+
+    handleFlash(id);
   };
 
-  const handleFlash = () => {
-    setFlashing(true);
+  const handleFlash = (id) => {
+    if (flashing === id) return;
+    setFlashing(id);
     setTimeout(() => {
-      setFlashing(false);
+      setFlashing(null);
     }, 200); // 300 ms matches animation length in CSS
   }
+
+  useEffect(
+    () => {
+      if (!document) return;
+      const handleTouchStart = (e) => {
+        e.preventDefault();
+      };
+      document.querySelector('.dots').addEventListener('touchstart', handleTouchStart, { passive: false });
+      
+      const handleTouchMove = (e) => {
+        e.preventDefault();
+      
+        // Get the first touch
+        const touch = e.touches[0];
+      
+        // Get all elements at the touch coordinates
+        const elements = document.elementsFromPoint(touch.clientX, touch.clientY);
+      
+        // Find the first .dot element within the .dots container
+        const dotElement = elements.find((element) => element.classList.contains('dot'));
+      
+        if (dotElement && dotElement.closest('.dots')) {
+          // Get the data-id attribute
+          const dotId = dotElement.getAttribute('data-id');
+      
+          // Call handleMouseOverDot with the id
+          handleMouseOverDot(dotId);
+        }
+      };
+      document.querySelector('.dots').addEventListener('touchmove', handleTouchMove, { passive: false });
+    }, [document]);
 
   return (
     <RoomItShinesStyles>
       {flashing && <div className="flash"></div>}
       <div className="dots">
         {dots.map(dot => 
-          <div key={dot.id} className={`dot ${dot.class}`} style={dot.style} onMouseOver={dot.class === '' ? () => handleMouseOverDot(dot.id) : null} />
+          <div 
+            key={dot.id} 
+            data-id={dot.id}
+            className={`dot ${dot.class}`} 
+            style={dot.style} 
+            // onMouseOver={dot.class === '' ? () => handleMouseOverDot(dot.id) : null} 
+            // onTouchMove={(e) => {
+            //   // Prevent the default scroll behavior
+            //   // e.preventDefault();
+            //   console.log('meow');
+
+            //   // Use the touch coordinates to determine if the touch is over the div
+            //   // const touch = e.touches[0];
+            //   // const rect = e.target.getBoundingClientRect();
+            //   // if (
+            //   //   touch.clientX >= rect.left &&
+            //   //   touch.clientX <= rect.right &&
+            //   //   touch.clientY >= rect.top &&
+            //   //   touch.clientY <= rect.bottom
+            //   // ) {
+            //     if (dot.class === '') handleMouseOverDot(dot.id);
+            //   // }
+            // }}
+          />
         )}
       </div>
       <LyricsContainer 

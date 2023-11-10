@@ -61,6 +61,11 @@ const PlayFirstStyles = styled.div`
 
   h1 {
     font-size: 50px;
+    
+    @media (max-width: 500px) {
+      font-size: 23px;
+      padding-bottom:0.5em;
+    }
   }
 
   button.textButton {
