@@ -123,8 +123,6 @@ const getNewDots = () => {
   const dots = [];
   const minDistance = 10; // minimum distance between dots in rem
   const maxAttempts = 100; // maximum number of attempts to place a dot
-  // const viewportCenterX = 50; // center of the viewport in percentage
-  // const viewportCenterY = 50; // center of the viewport in percentage
 
   const getRandomCoordinate = () => Math.floor(Math.random() * 80 + 0) + '%';
 
@@ -241,24 +239,7 @@ export default function RoomItShines({roomVideoPosition, setVideoStyles, setVide
             data-id={dot.id}
             className={`dot ${dot.class}`} 
             style={dot.style} 
-            // onMouseOver={dot.class === '' ? () => handleMouseOverDot(dot.id) : null} 
-            // onTouchMove={(e) => {
-            //   // Prevent the default scroll behavior
-            //   // e.preventDefault();
-            //   console.log('meow');
-
-            //   // Use the touch coordinates to determine if the touch is over the div
-            //   // const touch = e.touches[0];
-            //   // const rect = e.target.getBoundingClientRect();
-            //   // if (
-            //   //   touch.clientX >= rect.left &&
-            //   //   touch.clientX <= rect.right &&
-            //   //   touch.clientY >= rect.top &&
-            //   //   touch.clientY <= rect.bottom
-            //   // ) {
-            //     if (dot.class === '') handleMouseOverDot(dot.id);
-            //   // }
-            // }}
+            onMouseOver={dot.class === '' ? () => handleMouseOverDot(dot.id) : null} 
           />
         )}
       </div>

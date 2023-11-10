@@ -110,7 +110,7 @@ export default function PlayFirst({ firstRoom, setRoomName, setCreditsVisible })
         <h1>24-Hour Fur Coat Store</h1>
         <p className="byLine">by UTTER</p>
         <p className="blurb">
-          This is an interactive player. Explore each track to find the ways you can interact with it.
+          This is an interactive player. Explore each track to find the ways you can interact with it, or just let the music run.
         </p>
         <p className="blurb mobileOnly">
           (It will be more fun on a larger screen.)
