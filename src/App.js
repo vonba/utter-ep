@@ -11,7 +11,7 @@ function App() {
   const firstIndex = getRandomInteger(0, Object.keys(rooms).length - 1);
   let firstRoom = Object.keys(rooms)[firstIndex];
   const initialRooms = Object.keys(rooms).filter(r => r !== firstRoom);
-  firstRoom = 'the-killer-is-on-the-phone';
+  firstRoom = 'it-shines';
 
   const [roomName, setRoomName] = useState();
   const [paused, setPaused] = useState(false);

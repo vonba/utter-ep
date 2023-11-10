@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import getRandomInteger from "../lib/getRandomInteger";
-import { LyricsContainer, checkTimeCodes, useEvents } from "../lib/useEvents";
+import { LyricsContainer } from "../lib/useEvents";
 
 const RoomItShinesStyles = styled.div`
   @keyframes fade-in {
@@ -20,13 +20,42 @@ const RoomItShinesStyles = styled.div`
       transform: scale(1.12);
     }
   }
-  @keyframes spin {
+  @keyframes pulsate {
+    0% {
+      transform: scale(1) rotate(0deg);
+    }
+    50% {
+      transform: scale(1.25) rotate(180deg);
+    }
+    100% {
+      transform: scale(1) rotate(359deg);
+    }
+  }
+  @keyframes shrink {
     from {
-      transform: rotate(0deg);
+      transform: scale(1);
     }
     to {
-      transform: rotate(359deg);
+      transform: scale(0);
     }
+  }
+  @keyframes flash {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .flash {
+    animation: flash 0.2s; // Matches timeout length
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: white;
   }
 
   .words {
@@ -51,11 +80,12 @@ const RoomItShinesStyles = styled.div`
     border-radius: 50%;
     background: red url("/24-cover-bw.png") center no-repeat;
     background-size: cover;
-    animation: spin 3s linear infinite;
+    animation: pulsate 3s linear infinite;
     transition: all 1s;
 
     &.bumped {
-      filter: invert();
+      animation: shrink 1s;
+      opacity: 0;
     }
   }
 `;
@@ -96,7 +126,7 @@ const getNewDots = () => {
   // const viewportCenterX = 50; // center of the viewport in percentage
   // const viewportCenterY = 50; // center of the viewport in percentage
 
-  const getRandomCoordinate = () => Math.floor(Math.random() * 40 + 30) + '%';
+  const getRandomCoordinate = () => Math.floor(Math.random() * 80 + 0) + '%';
 
   const isOverlapping = (dot, existingDots) => {
     for (const existingDot of existingDots) {
@@ -135,16 +165,17 @@ const getNewDots = () => {
 };
 
 export default function RoomItShines({roomVideoPosition, setVideoStyles, setVideoBgStyles}) {
-  const [dots, setDots] = useState([]);
+  const [dots, setDots] = useState(getNewDots());
+  const [flashing, setFlashing] = useState(false);
 
   useEffect(() => {
-    const t2 = setInterval(() => { setDots(getNewDots()) }, 5000);
+    const t2 = setInterval(() => { setDots(getNewDots()) }, 15000);
     
     // Cleanup previous timeouts
     return () => {
       clearInterval(t2);
     };
-  }, [roomVideoPosition]);
+  }, []);
 
   const handleMouseOverDot = (id) => {
     // Find the element in dots with this id
@@ -158,14 +189,22 @@ export default function RoomItShines({roomVideoPosition, setVideoStyles, setVide
   
     // Replace the previous elements with the new ones, using setDots()
     setDots(updatedDots);
+    handleFlash();
   };
 
+  const handleFlash = () => {
+    setFlashing(true);
+    setTimeout(() => {
+      setFlashing(false);
+    }, 200); // 300 ms matches animation length in CSS
+  }
 
   return (
     <RoomItShinesStyles>
+      {flashing && <div className="flash"></div>}
       <div className="dots">
         {dots.map(dot => 
-          <div key={dot.id} className={`dot ${dot.class}`} style={dot.style} onMouseOver={() => handleMouseOverDot(dot.id)} />
+          <div key={dot.id} className={`dot ${dot.class}`} style={dot.style} onMouseOver={dot.class === '' ? () => handleMouseOverDot(dot.id) : null} />
         )}
       </div>
       <LyricsContainer 

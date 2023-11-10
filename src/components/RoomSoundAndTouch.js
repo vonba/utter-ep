@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import getRandomInteger from "../lib/getRandomInteger";
 import { useState } from "react";
-import { LyricsContainer, checkTimeCodes, useEvents } from "../lib/useEvents";
+import { LyricsContainer } from "../lib/useEvents";
 import { useEffect } from "react";
 
 const colors = ['bisque', 'mediumorchid', 'chocolate', 'transparent'];

@@ -58,15 +58,10 @@ text-align: center;
 }
 `;
 
-export const useEvents = () => {
-  const [currentLine, setCurrentLine] = useState(null);
-  return [currentLine, setCurrentLine];
-}
-
 // lines should be of this format:
 //  {start: {m: 0, s: 13}, durationMs: 1000,  text: 'Attack yourself', 
 //   class: '', videoStyles: {}, videoBgStyles: {}, style: {}},
-export const checkTimeCodes = (roomVideoPosition, lines, setCurrentLine, setVideoStyles = null, setVideoBgStyles = null) => {
+const checkTimeCodes = (roomVideoPosition, lines, setCurrentLine, setVideoStyles = null, setVideoBgStyles = null) => {
   if (roomVideoPosition === 0) return;
   const currentTime = roomVideoPosition;
   
@@ -92,10 +87,11 @@ export const checkTimeCodes = (roomVideoPosition, lines, setCurrentLine, setVide
 };
 
 export const LyricsContainer = ({lines, roomVideoPosition, style, setVideoStyles = null, setVideoBgStyles = null}) => {
-  const [currentLine, setCurrentLine] = useEvents();
+  const [currentLine, setCurrentLine] = useState();
 
   useEffect(() => {
     checkTimeCodes(roomVideoPosition, lines, setCurrentLine, setVideoStyles, setVideoBgStyles)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roomVideoPosition]);
 
   if (!currentLine) return null;

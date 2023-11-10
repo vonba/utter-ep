@@ -1,7 +1,7 @@
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import { LyricsContainer, checkTimeCodes, useEvents } from "../lib/useEvents";
+import { LyricsContainer } from "../lib/useEvents";
 
 const lines = [
   {start: {m: 0, s: 13}, durationMs: 1000,  text: 'Attack yourself', class: ''},
@@ -28,7 +28,7 @@ const lines = [
   {start: {m: 1, s: 59}, durationMs: 1200,  text: 'The killer is on the phone', class: 'huge'},
 ]
 
-const RoomTestStyles = styled.div`
+const RoomKillerStyles = styled.div`
   position: absolute;
   top: 20vh;
   /* height: 50vh; */
@@ -169,7 +169,7 @@ const RoomKiller = ({roomVideoPosition}) => {
   };
 
   return (
-    <RoomTestStyles>
+    <RoomKillerStyles>
       {cameraReady && <>
         <CanvasContainer>
           <canvas ref={canvasRef1} />
@@ -182,7 +182,7 @@ const RoomKiller = ({roomVideoPosition}) => {
         lines={lines}
         roomVideoPosition={roomVideoPosition}
       />
-    </RoomTestStyles>
+    </RoomKillerStyles>
   );
 };
 
