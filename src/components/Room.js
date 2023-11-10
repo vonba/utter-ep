@@ -1,12 +1,10 @@
 import styled from "styled-components";
 import VideoBackground from "./VideoBackground";
-import RoomDesire from "./RoomDesire";
+import RoomPicnic from "./RoomPicnic";
 import RoomItShines from "./RoomItShines";
 import RoomSoundAndTouch from "./RoomSoundAndTouch";
 import rooms from "../lib/rooms";
-import RoomTest from "./RoomMother";
 import { useState } from "react";
-import RoomTest2 from "./RoomGenius";
 import RoomKiller from "./RoomKiller";
 import RoomMother from "./RoomMother";
 import RoomGenius from "./RoomGenius";
@@ -17,6 +15,12 @@ const RoomStyles = styled.div`
   top: 0;
   width: 100vw;
   height: 100vh;
+  transition: opacity 1s;
+
+  &.paused {
+    opacity: 0.25;
+    pointer-events: none;
+  }
 
   video {
     object-fit: cover;
@@ -46,7 +50,7 @@ export default function Room({ roomName, paused, setEnded, roomVideoPosition, se
   }
 
   return (
-    <RoomStyles>
+    <RoomStyles className={paused ? 'paused' : ''}>
       <VideoBackground 
         videoStyles={videoStyles} 
         videoBgStyles={videoBgStyles} 
@@ -74,7 +78,7 @@ export default function Room({ roomName, paused, setEnded, roomVideoPosition, se
         </div>
       )}
       {roomName === "car-massacre-picnic" && (
-        <RoomDesire className="room" roomVideoPosition={roomVideoPosition} />
+        <RoomPicnic className="room" roomVideoPosition={roomVideoPosition} />
       )}
       {roomName === "the-killer-is-on-the-phone" && (
         <div className="roomWrapper">
