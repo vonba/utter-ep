@@ -4,14 +4,14 @@ import RoomSwitcher from "./components/RoomSwitcher";
 import './App.css';
 import PlayFirst from "./components/PlayFirst";
 import rooms from "./lib/rooms";
-import getRandomInteger from "./lib/getRandomInteger";
+// import getRandomInteger from "./lib/getRandomInteger";
 import Credits from "./components/Credits";
 
 function App() {
-  const firstIndex = getRandomInteger(0, Object.keys(rooms).length - 1);
-  let firstRoom = Object.keys(rooms)[firstIndex];
+  // const firstIndex = getRandomInteger(0, Object.keys(rooms).length - 1);
+  // let firstRoom = Object.keys(rooms)[firstIndex];
+  const firstRoom = 'cloth-mother-vs-metal-mother';
   const initialRooms = Object.keys(rooms).filter(r => r !== firstRoom);
-  firstRoom = 'it-shines';
 
   const [roomName, setRoomName] = useState();
   const [paused, setPaused] = useState(false);
