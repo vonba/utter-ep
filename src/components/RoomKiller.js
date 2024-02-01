@@ -30,30 +30,65 @@ const lines = [
 
 const RoomKillerStyles = styled.div`
   position: absolute;
-  top: 20vh;
-  /* height: 50vh; */
-  display: flex;
-  justify-content: space-evenly;
-  width: 100%;
+  top: 0;
+  
+  @media (min-width: 800px) {
+    top: 20vh;
+  }
+  
+  .camera-container {
+    &:not(.ready) {
+      display: none;
+    }
+
+    display: flex;
+    width: 100vw;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+
+    @media (min-width: 800px) {
+      justify-content: space-evenly;
+    }
+  
+    @media (max-width: 800px) {
+      flex-direction: column;
+    }
+    
+      & :first-child > canvas {
+        transform: rotate(-5deg);
+        
+        &::before {
+          transform: rotate(-5deg);
+        }
+      }  
+      canvas {
+        transform: rotate(6deg);
+
+        &::before {
+          transform: rotate(6deg);
+        }
+      }
+  }
+  
 `;
 
 const CanvasContainer = styled.div`
-  width: 25%;
-  /* height: 25%; */
+  background: black;
   animation: pulsate 0.588s linear infinite; /* 102 bpm */
 
   &::before {
     content: "";
+    display: block;
     position: absolute;
+    width: 100%;
+    height: 100%;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 70%);
-    opacity: 0.7;
+    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
+    opacity: 0.8;
     z-index: 1;
     pointer-events: none;
-    width: 89%;
   }
 
   @keyframes pulsate {
@@ -100,14 +135,15 @@ const RoomKiller = ({roomVideoPosition}) => {
 
   // Camera stuff
   useEffect(() => {
+    if (cameraReady || !canvasRef1.current || !canvasRef2.current) return;
     startCamera();
-  });
+  }, [cameraReady, canvasRef1, canvasRef2]);
 
   const startCamera = async () => {
+    console.log('startCamera');
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       const video = document.createElement("video");
-      setCameraReady(true);
 
       video.srcObject = stream;
       video.play();
@@ -119,6 +155,19 @@ const RoomKiller = ({roomVideoPosition}) => {
       const ctx2 = canvas2.getContext("2d");
 
       let lastFrame;
+
+      const applyEffect = (ctx, width, height) => {
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const data = imageData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+          data[i] = 255 - data[i]; // Red
+          data[i + 1] = 255 - data[i + 1]; // Green
+          data[i + 2] = 255 - data[i + 2]; // Blue
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+      };
 
       const renderFrame = () => {
         // Get the video image data
@@ -140,24 +189,13 @@ const RoomKiller = ({roomVideoPosition}) => {
         lastFrame = requestAnimationFrame(renderFrame);
       };
 
-      const applyEffect = (ctx, width, height) => {
-        const imageData = ctx.getImageData(0, 0, width, height);
-        const data = imageData.data;
-
-        for (let i = 0; i < data.length; i += 4) {
-          data[i] = 255 - data[i]; // Red
-          data[i + 1] = 255 - data[i + 1]; // Green
-          data[i + 2] = 255 - data[i + 2]; // Blue
-        }
-
-        ctx.putImageData(imageData, 0, 0);
-      };
-
       video.addEventListener("loadedmetadata", () => {
         canvas1.width = canvas2.width = video.videoWidth / 2;
         canvas1.height = canvas2.height = video.videoHeight / 2;
         lastFrame = requestAnimationFrame(renderFrame);
       });
+
+      setCameraReady(true);
 
       return () => {
         video.srcObject.getTracks().forEach((track) => track.stop());
@@ -170,14 +208,14 @@ const RoomKiller = ({roomVideoPosition}) => {
 
   return (
     <RoomKillerStyles>
-      {cameraReady && <>
+      <div className={`camera-container ${cameraReady ? 'ready' : ''}`}>
         <CanvasContainer>
           <canvas ref={canvasRef1} />
         </CanvasContainer>
         <CanvasContainer>
           <canvas ref={canvasRef2} />
         </CanvasContainer>
-      </>}
+      </div>
       <LyricsContainer 
         lines={lines}
         roomVideoPosition={roomVideoPosition}
