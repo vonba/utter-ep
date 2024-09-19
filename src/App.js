@@ -10,7 +10,7 @@ import Credits from "./components/Credits";
 function App() {
   // const firstIndex = getRandomInteger(0, Object.keys(rooms).length - 1);
   // let firstRoom = Object.keys(rooms)[firstIndex];
-  const firstRoom = 'cloth-mother-vs-metal-mother';
+  const firstRoom = 'car-massacre-picnic';
   const initialRooms = Object.keys(rooms).filter(r => r !== firstRoom);
 
   const [roomName, setRoomName] = useState();
